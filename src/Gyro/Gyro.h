@@ -2,6 +2,7 @@
 #define GYRO_H
 
   #include "Wire.h"
+  #include "GyroOutput.h"
 
   class Gyro
   {
@@ -13,48 +14,41 @@
     const int GYRO_REFRESH_RATE = 250;
     const float ANGLE_PER_SEC = 131;
     const int CALIBRATION_CHECKS = 2000;
-    const float TO_RADIANS_MULTIPLIER = ((float)PI / (float)180);
 
-    float _updatePeriod = 0;
-    uint32_t _previousReadTime = 0;
+    float UpdatePeriod;
+    uint32_t PreviousReadTime;
 
-    int16_t _gyro_X;
-    int16_t _gyro_Y;
-    int16_t _gyro_Z;
+    int16_t GyroX;
+    int16_t GyroY;
+    int16_t GyroZ;
 
-    int16_t _temperature;
+    int16_t Temperature;
 
-    int16_t _accelerometer_X;
-    int16_t _accelerometer_Y;
-    int16_t _accelerometer_Z;
+    int16_t AccelerometerX;
+    int16_t AccelerometerY;
+    int16_t AccelerometerZ;
     
-    float _offset_gyro_X;
-    float _offset_gyro_Y;
-    float _offset_gyro_Z;
-    int _calibrationChecksLeft;
+    float OffsetGyroX;
+    float OffsetGyroY;
+    float OffsetGyroZ;
 
-    float _gyroMultiplier;
+    bool CalibrationDone;
+    int CalibrationChecksLeft;
+
+    float AngleMultiplier;
 
     void ApplyGyroOffset();
-    float GetConvertedAngle(int16_t input);
-    float GetRadians(float degrees);
-    String GetString(int16_t input);
-    String GetString(float input);
+    void Calibrate();
+    void ReadValues();
     
     public:
     Gyro();
 
-    float AnglePitch;
-    float AngleRoll;
-    float AngleYaw;
-    bool CalibrationDone;
-
     void Setup();
     void ReadOrCalibrate();
-    void Calibrate();
-    void ReadValues();
-    void UpdateAngles();
-    String ToString();
+    float GetAngleMultiplayer();
+    float GetUpdatePeriod();
+    GyroOutput GetOutput();
   };
 
 #endif

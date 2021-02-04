@@ -1,7 +1,8 @@
 #include <Arduino.h>
 #include "Fm\TimerController\Timer2.h"
 #include "Fm\FmChannels\FmChannelsContainer.h"
-#include "Gyro/Gyro.h"
+#include "Gyro\Gyro.h"
+#include "Gyro\GyroAngles.h"
 
 #define SERIAL1_TX_PIN PA9
 #define SERIAL1_RX_PIN PA10
@@ -18,6 +19,7 @@ HardwareSerial Serial1(SERIAL1_RX_PIN, SERIAL1_TX_PIN);
 FmChannelsContainer *fmChannelsContainer;
 
 Gyro *gyro;
+GyroAngles *gyroAngles;
 
 void SetupSerials()
 {
@@ -55,6 +57,10 @@ void SetupFmChannelsContainer()
 void SetupGyro()
 {
   gyro = new Gyro();
+  gyroAngles = new GyroAngles(
+    gyro->GetAngleMultiplayer(),
+    gyro->GetUpdatePeriod()
+  );
   gyro->Setup();
 }
 
@@ -69,10 +75,13 @@ void setup() {
 void loop() {
   fmChannelsContainer->UpdateChannelsValues();
   gyro->ReadOrCalibrate();
+  gyroAngles->TryUpdateAngles(
+    gyro->GetOutput()
+  );
 
   if (millis() - previousPrintTime > 500) {
 
-    Serial.println(gyro->ToString());
+    Serial.println(gyroAngles->ToString());
     // Serial1.print(
     //   fmChannelsContainer->ToSerialString()
     // );

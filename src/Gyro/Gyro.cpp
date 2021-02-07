@@ -9,7 +9,6 @@ Gyro::Gyro()
   OffsetGyroZ = 0;
   CalibrationDone = false;
   CalibrationChecksLeft = CALIBRATION_CHECKS;
-  AngleMultiplier = (float)1 / ANGLE_PER_SEC / (float)GYRO_REFRESH_RATE;
   UpdatePeriod = (float)1000000 / (float)GYRO_REFRESH_RATE;
   PreviousReadTime = 0;
 }
@@ -85,7 +84,7 @@ void Gyro::ApplyGyroOffset()
 
 float Gyro::GetAngleMultiplayer()
 {
-  return AngleMultiplier;
+  return (float)1 / ANGLE_PER_SEC / (float)GYRO_REFRESH_RATE;
 }
 
 float Gyro::GetUpdatePeriod()

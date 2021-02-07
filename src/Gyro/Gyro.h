@@ -35,8 +35,6 @@
     bool CalibrationDone;
     int CalibrationChecksLeft;
 
-    float AngleMultiplier;
-
     void ApplyGyroOffset();
     void Calibrate();
     void ReadValues();

@@ -6,6 +6,7 @@ GyroAngles::GyroAngles(float angleMultiplier, float updatePeriod)
   Roll = 0;
   Yaw = 0;
   AngleMultiplier = angleMultiplier;
+  CalibrationDone = false;
   UpdatePeriod = updatePeriod;
   PreviousReadTime = 0;
 }
@@ -15,6 +16,7 @@ void GyroAngles::TryUpdateAngles(GyroOutput gyroOutput)
   uint32_t currentTime = micros();
   if (gyroOutput.CalibrationDone && currentTime - PreviousReadTime > UpdatePeriod)
   {
+    CalibrationDone = true;
     PreviousReadTime = currentTime;
 
     float currentAnglePitch = GetConvertedAngle(gyroOutput.GyroX);
@@ -39,16 +41,17 @@ float GyroAngles::GetRadians(float degrees) {
   return degrees * TO_RADIANS_MULTIPLIER;
 }
 
-String GyroAngles::ToString()
+String GyroAngles::ToSerialString()
 {
-  return
-    // GetString(_accelerometer_X)
-    // + "|" + GetString(_accelerometer_Y)
-    // + "|" + GetString(_accelerometer_Z)
-    // + "|" + GetString(_temperature)
-    // + "|" + GetString(AngleRoll)
-    // + "|" + GetString(AnglePitch)
-    // + "|" + GetString(AngleYaw);
+  String outputString = "";
+  char wordSeparator = 'a';
 
-    String(Pitch, 4);
+  outputString += "[" + String(SERIAL_PRINT_KEY) + "]";
+  outputString += String(millis()) + (wordSeparator++);
+  outputString += String(CalibrationDone) + (wordSeparator++);
+  outputString += String(Pitch, 4) + (wordSeparator++);
+  outputString += String(Roll, 4) + (wordSeparator++);
+  outputString += String(Yaw, 4);
+
+  return "<" + outputString + ">";
 }

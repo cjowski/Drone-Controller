@@ -7,6 +7,8 @@
   class FmChannelsContainer
   {
     private:
+    const char SERIAL_PRINT_KEY = 'F';
+
     int ChannelsCount = 0;
     FmChannel *Channels;
 

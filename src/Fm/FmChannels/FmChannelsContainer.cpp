@@ -27,8 +27,9 @@ bool FmChannelsContainer::FmSignalActive()
 String FmChannelsContainer::ToSerialString()
 {
   String outputString = "";
-  char wordSeparator = 'A';
+  char wordSeparator = 'a';
 
+  outputString += "[" + String(SERIAL_PRINT_KEY) + "]";
   outputString += String(millis()) + (wordSeparator++);
   outputString += String(FmSignalActive()) + (wordSeparator++);
 

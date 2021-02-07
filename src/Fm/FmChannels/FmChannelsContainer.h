@@ -2,13 +2,12 @@
 #define FM_CHANNELS_CONTAINER_H
 
   #include <WString.h>
+  #include <list>
   #include "FmChannel.h"
 
   class FmChannelsContainer
   {
     private:
-    const char SERIAL_PRINT_KEY = 'F';
-
     int ChannelsCount = 0;
     FmChannel *Channels;
 
@@ -16,7 +15,7 @@
     FmChannelsContainer(FmChannel *channels, int channelsCount);
     void UpdateChannelsValues();
     bool FmSignalActive();
-    String ToSerialString();
+    std::list<String> ToStringList();
   };
 
 #endif

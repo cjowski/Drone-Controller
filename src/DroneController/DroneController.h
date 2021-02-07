@@ -23,6 +23,7 @@
     Gyro *MyGyro;
     GyroAngles *MyGyroAngles;
 
+    HardwareSerial *PrinterSerial;
     SerialPrinter *SerialPrinterFm;
     SerialPrinter *SerialPrinterGyro;
 
@@ -30,7 +31,7 @@
     void SetupFmChannelsContainer();
     void SetupGyro();
     void SetupSerials();
-    void SetupSerialPrinters(HardwareSerial *printerSerial);
+    void SetupSerialPrinters();
 
     void UpdateFmChannelsState();
     void UpdateGyroState();

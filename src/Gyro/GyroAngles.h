@@ -3,6 +3,7 @@
 
   #include <math.h>
   #include <WString.h>
+  #include <list>
   #include <wiring_time.h>
   #include <wiring_constants.h>
   #include "GyroOutput.h"
@@ -11,7 +12,6 @@
   {
     private:
     const float TO_RADIANS_MULTIPLIER = ((float)PI / (float)180);
-    const char SERIAL_PRINT_KEY = 'G';
     
     float Pitch;
     float Roll;
@@ -28,7 +28,7 @@
     void TryUpdateAngles(GyroOutput gyroOutput);
     float GetConvertedAngle(int16_t input);
     float GetRadians(float degrees);
-    String ToSerialString();
+    std::list<String> ToStringList();
   };
 
 #endif

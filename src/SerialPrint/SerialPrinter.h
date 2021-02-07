@@ -4,21 +4,26 @@
   #include <WSerial.h>
   #include <WString.h>
   #include <functional>
+  #include <list>
   #include <wiring_time.h>
 
   class SerialPrinter
   {
     private:
     HardwareSerial *PrinterSerial;
-    std::function<String(void)> GetSerialStringCallback;
+    std::function<std::list<String>(void)> GetStringListCallback;
+    char PrintKey;
 
-    int PrintDelay;
-    uint32_t PreviousPrintTime; 
+    uint32_t PrintDelay;
+    uint32_t PreviousPrintTime;
+
+    String GetPrintString();
 
     public:
     SerialPrinter(
       HardwareSerial *printerSerial,
-      std::function<String(void)> getSerialStringCallback,
+      std::function<std::list<String>(void)> getStringListCallback,
+      char printKey,
       int printDelay
     );
     void SerialPrintln();

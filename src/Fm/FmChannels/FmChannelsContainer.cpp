@@ -24,23 +24,23 @@ bool FmChannelsContainer::FmSignalActive()
   return true;
 }
 
-String FmChannelsContainer::ToSerialString()
+std::list<String> FmChannelsContainer::ToStringList()
 {
-  String outputString = "";
-  char wordSeparator = 'a';
+  std::list<String> outputList;
 
-  outputString += "[" + String(SERIAL_PRINT_KEY) + "]";
-  outputString += String(millis()) + (wordSeparator++);
-  outputString += String(FmSignalActive()) + (wordSeparator++);
+  outputList.push_back(
+    String(millis())
+  );
+
+  outputList.push_back(
+    String(FmSignalActive())
+  );
 
   for (int i = 0; i < ChannelsCount; i++) {
-    outputString += String(Channels[i].GetValue());
-
-    if (i < ChannelsCount - 1)
-    {
-      outputString += (wordSeparator++);
-    }
+    outputList.push_back(
+      String(Channels[i].GetValue())
+    );
   }
 
-  return "<" + outputString + ">";
+  return outputList;
 }

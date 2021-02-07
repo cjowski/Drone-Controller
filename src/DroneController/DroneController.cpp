@@ -8,14 +8,6 @@ void DroneController::Setup()
   SetupFmChannelsContainer();
   SetupGyro();
   SetupSerials();
-  SetupSerialPrinters(&Serial);
-}
-
-void DroneController::SetupSerials()
-{
-  Serial.begin(SERIAL_BAUD_RATE); 
-  HardwareSerial Serial1(SERIAL1_RX_PIN, SERIAL1_TX_PIN);
-  Serial1.begin(SERIAL_BAUD_RATE);
 }
 
 void DroneController::SetupTimers()
@@ -56,22 +48,31 @@ void DroneController::SetupGyro()
   MyGyro->Setup();
 }
 
-void DroneController::SetupSerialPrinters(HardwareSerial *printerSerial)
+void DroneController::SetupSerials()
+{
+  PrinterSerial = new HardwareSerial(SERIAL1_RX_PIN, SERIAL1_TX_PIN);
+  PrinterSerial->begin(SERIAL_BAUD_RATE);
+  SetupSerialPrinters();
+}
+
+void DroneController::SetupSerialPrinters()
 {
   SerialPrinterFm = new SerialPrinter(
-    printerSerial,
-    [&] ()->String {
-      return MyFmChannelsContainer->ToSerialString();
+    PrinterSerial,
+    [&] ()->std::list<String> {
+      return MyFmChannelsContainer->ToStringList();
     },
-    500
+    'F',
+    50
   );
 
   SerialPrinterGyro = new SerialPrinter(
-    printerSerial,
-    [&] ()->String {
-      return MyGyroAngles->ToSerialString();
+    PrinterSerial,
+    [&] ()->std::list<String> {
+      return MyGyroAngles->ToStringList();
     },
-    1000
+    'G',
+    120
   );
 }
 

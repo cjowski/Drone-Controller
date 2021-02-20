@@ -23,6 +23,8 @@
     float UpdatePeriod;
     uint32_t PreviousReadTime;
 
+    bool SetGyroAngles;
+
     public:
     GyroAngles(float updatePeriod, float angleMultiplier);
     void TryUpdateAngles(GyroOutput gyroOutput);

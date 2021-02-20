@@ -50,8 +50,8 @@ void DroneController::SetupGyro()
 
 void DroneController::SetupSerials()
 {
-  PrinterSerial = new HardwareSerial(SERIAL1_RX_PIN, SERIAL1_TX_PIN);
-  PrinterSerial->begin(SERIAL_BAUD_RATE);
+  PrinterSerial = new HardwareSerial(SERIAL3_RX_PIN, SERIAL3_TX_PIN);
+  //PrinterSerial = &Serial;
   SetupSerialPrinters();
 }
 
@@ -97,6 +97,8 @@ void DroneController::UpdateGyroState()
 
 void DroneController::SerialPrint()
 {
+  PrinterSerial->begin(SERIAL_BAUD_RATE);
   SerialPrinterFm->SerialPrintln();
   SerialPrinterGyro->SerialPrintln();
+  PrinterSerial->end();
 }

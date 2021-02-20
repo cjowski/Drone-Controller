@@ -22,7 +22,7 @@
     const int ALLOWED_VALUE_DIFFERENCE = 500;
     const int WRONG_SIGNAL_WAIT_TIME_MILLIS = 500;
     const int CHECK_POSITIVE_SIGNALS_TIME_MILLIS = 1000;
-
+    
     void AddToPreviousValues(int32_t value);
     bool CanUpdateValue();
     bool MinMaxValid(int32_t newValue);
@@ -30,7 +30,12 @@
     bool PositiveSignalValid(int32_t newValue);
 
     public:
-    bool FmSignalActive = false;
+    enum SignalState {
+      inactive = 0,
+      active = 1,
+      restoring = 2
+    };
+    SignalState FmSignalState;
     FmChannel();
     void AttachUpdateValueCallback(std::function<void(void)> callback);
     int32_t GetValue();

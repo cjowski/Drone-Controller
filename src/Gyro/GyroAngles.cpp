@@ -9,6 +9,7 @@ GyroAngles::GyroAngles(float angleMultiplier, float updatePeriod)
   CalibrationDone = false;
   UpdatePeriod = updatePeriod;
   PreviousReadTime = 0;
+  SetGyroAngles = false;
 }
 
 void GyroAngles::TryUpdateAngles(GyroOutput gyroOutput)
@@ -30,6 +31,27 @@ void GyroAngles::TryUpdateAngles(GyroOutput gyroOutput)
     float angleYawTransition = sin(GetRadians(currentAngleYaw));
     Pitch += Roll * angleYawTransition;
     Roll -= Pitch * angleYawTransition;
+
+    float totalAccelerometerVector = sqrt(
+      (gyroOutput.AccelerometerX * gyroOutput.AccelerometerX)
+      + (gyroOutput.AccelerometerY * gyroOutput.AccelerometerY)
+      + (gyroOutput.AccelerometerZ * gyroOutput.AccelerometerZ)
+    );
+
+    float pitchAcceleration = asin(gyroOutput.AccelerometerY / totalAccelerometerVector) * ((float)1 / TO_RADIANS_MULTIPLIER);
+    float rollAcceleration = asin(gyroOutput.AccelerometerX / totalAccelerometerVector) * ((float)-1 / TO_RADIANS_MULTIPLIER);
+
+    if (SetGyroAngles)
+    {
+      Pitch = Pitch * 0.9996 + pitchAcceleration * 0.0004;
+      Roll = Roll * 0.9996 + rollAcceleration * 0.0004;
+    }
+    else
+    {
+      Pitch = pitchAcceleration;
+      Roll = rollAcceleration;
+      SetGyroAngles = true;
+    }
   }
 }
 

@@ -3,6 +3,7 @@
 FmChannel::FmChannel()
 {
   Value = -1;
+  FmSignalState = SignalState::inactive;
 }
 
 void FmChannel::AttachUpdateValueCallback(std::function<void(void)> callback)
@@ -59,6 +60,7 @@ bool FmChannel::NewValueValid(int32_t newValue)
   uint32_t currentTime = millis();
   if (!MinMaxValid(newValue) || !ComparedToPreviousValuesValid(newValue))
   {
+    FmSignalState = SignalState::inactive;
     startCheckPositiveSignalsAtTime = currentTime + WRONG_SIGNAL_WAIT_TIME_MILLIS;
     stopUpdateUntilTime = startCheckPositiveSignalsAtTime + CHECK_POSITIVE_SIGNALS_TIME_MILLIS;
     return false;
@@ -66,8 +68,13 @@ bool FmChannel::NewValueValid(int32_t newValue)
   else if (currentTime > startCheckPositiveSignalsAtTime && currentTime < stopUpdateUntilTime)
   {
     if (!PositiveSignalValid(newValue)) {
+      FmSignalState = SignalState::inactive;
       startCheckPositiveSignalsAtTime = currentTime + WRONG_SIGNAL_WAIT_TIME_MILLIS;
       stopUpdateUntilTime = startCheckPositiveSignalsAtTime + CHECK_POSITIVE_SIGNALS_TIME_MILLIS;
+    }
+    else
+    {
+      FmSignalState = SignalState::restoring;
     }
     return false;
   }
@@ -80,10 +87,7 @@ void FmChannel::TrySetNewValue(int32_t newValue)
   if (NewValueValid(newValue) && CanUpdateValue())
   {
     Value = newValue;
-    FmSignalActive = true;
-  }
-  else {
-    FmSignalActive = false;
+    FmSignalState = SignalState::active;
   }
 
   AddToPreviousValues(newValue);

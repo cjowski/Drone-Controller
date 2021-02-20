@@ -12,7 +12,7 @@
     const int START_READ_REGISTER = 0x3B;
     const int REGISTERS_COUNT = 14;
     const int GYRO_REFRESH_RATE = 250;
-    const float ANGLE_PER_SEC = 131;
+    const float ANGLE_PER_SEC = 65.5;
     const int CALIBRATION_CHECKS = 2000;
 
     float UpdatePeriod;

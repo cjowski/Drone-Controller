@@ -13,15 +13,23 @@ void FmChannelsContainer::UpdateChannelsValues()
   }
 }
 
-bool FmChannelsContainer::FmSignalActive()
+FmChannel::SignalState FmChannelsContainer::FmSignalState()
 {
+  int activeChannelsCount = 0;
   for (int i = 0; i < ChannelsCount; i++) {
-    if (!Channels[i].FmSignalActive) {
-      return false;
+    if (Channels[i].FmSignalState == FmChannel::SignalState::inactive) {
+      return FmChannel::SignalState::inactive;
+    }
+    else if (Channels[i].FmSignalState == FmChannel::SignalState::active) {
+      activeChannelsCount++;
     }
   }
 
-  return true;
+  if (activeChannelsCount == ChannelsCount)
+  {
+    return FmChannel::SignalState::active;
+  }
+  return FmChannel::SignalState::restoring;
 }
 
 std::list<String> FmChannelsContainer::ToStringList()
@@ -33,7 +41,7 @@ std::list<String> FmChannelsContainer::ToStringList()
   );
 
   outputList.push_back(
-    String(FmSignalActive())
+    String(FmSignalState())
   );
 
   for (int i = 0; i < ChannelsCount; i++) {

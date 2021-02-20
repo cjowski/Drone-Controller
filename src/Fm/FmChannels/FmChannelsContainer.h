@@ -14,7 +14,7 @@
     public:
     FmChannelsContainer(FmChannel *channels, int channelsCount);
     void UpdateChannelsValues();
-    bool FmSignalActive();
+    FmChannel::SignalState FmSignalState();
     std::list<String> ToStringList();
   };
 

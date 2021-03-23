@@ -1,14 +1,13 @@
 #include <Arduino.h>
 #include "DroneController/DroneController.h"
 
-DroneController *droneController = new DroneController();
+DroneController *droneController;
 
 void setup() {
-  droneController->Setup();
+  droneController = new DroneController();
   delay(250);
 }
 
 void loop() {
   droneController->Loop();
-  droneController->SerialPrint();
 }

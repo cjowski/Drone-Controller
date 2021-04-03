@@ -1,14 +1,13 @@
 #include "SerialPrintController.h"
 
 SerialPrintController::SerialPrintController(
-  int rxPin,
-  int txPin,
+  HardwareSerial *printerSerial,
   int serialBaudRate,
   std::function<std::list<String>(void)> getFmStrings,
   std::function<std::list<String>(void)> getGyroStrings
 )
 {
-  PrinterSerial = new HardwareSerial(rxPin, txPin);
+  PrinterSerial = printerSerial;
   SerialBaudRate = serialBaudRate;
 
   SerialPrinterFm = new SerialPrinter(
@@ -31,5 +30,5 @@ void SerialPrintController::Print()
   PrinterSerial->begin(SerialBaudRate);
   SerialPrinterFm->SerialPrintln();
   SerialPrinterGyro->SerialPrintln();
-  PrinterSerial->end();
+  PrinterSerial->flush();
 }

@@ -7,8 +7,7 @@
   {
     public:
     SerialPrintController(
-      int rxPin,
-      int txPin,
+      HardwareSerial *printerSerial,
       int serialBaudRate,
       std::function<std::list<String>(void)> getFmStrings,
       std::function<std::list<String>(void)> getGyroStrings

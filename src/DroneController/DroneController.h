@@ -2,6 +2,7 @@
 #define DRONE_CONTROLLER_H
 
   #include "Serial/Printer/SerialPrintController.h"
+  #include "Serial/Reader/Read/String/SerialStringReader.h"
   #include "Fm/FmController.h"
   #include "Gyro/GyroController.h"
 
@@ -21,6 +22,7 @@
     FmController *MyFmController;
     GyroController *MyGyroController;
     SerialPrintController *MySerialPrintController;
+    SerialReader *MySerialReader;
 
     public:
     DroneController();

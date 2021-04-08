@@ -3,12 +3,13 @@
 
   #include "Fm/TimerController/Timer2.h"
   #include "Fm/FmChannels/FmChannelsContainer.h"
+  #include "Fm/FmChannels/FmChannelsSerialValue.h"
 
   class FmController
   {
     public:
     FmController();
-    std::list<String> GetPrintStrings();
+    FmChannelsSerialValue *GetSerialValue();
     void Loop();
 
     private:

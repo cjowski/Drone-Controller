@@ -23,9 +23,9 @@ FmController::FmController()
   MyFmChannelsContainer = new FmChannelsContainer(channels, FM_CHANNELS_COUNT);
 }
 
-std::list<String> FmController::GetPrintStrings()
+FmChannelsSerialValue* FmController::GetSerialValue()
 {
-  return MyFmChannelsContainer->ToStringList();
+  return MyFmChannelsContainer->GetSerialValue();
 }
 
 void FmController::Loop()

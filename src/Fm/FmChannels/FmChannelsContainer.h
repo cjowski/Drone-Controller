@@ -4,6 +4,7 @@
   #include <WString.h>
   #include <list>
   #include "FmChannel.h"
+  #include "FmChannelsSerialValue.h"
 
   class FmChannelsContainer
   {
@@ -15,7 +16,7 @@
     FmChannelsContainer(FmChannel *channels, int channelsCount);
     void UpdateChannelsValues();
     FmChannel::SignalState FmSignalState();
-    std::list<String> ToStringList();
+    FmChannelsSerialValue *GetSerialValue();
   };
 
 #endif

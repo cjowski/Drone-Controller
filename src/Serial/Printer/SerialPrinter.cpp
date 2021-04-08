@@ -1,50 +1,30 @@
 #include "SerialPrinter.h"
 
 SerialPrinter::SerialPrinter(
-  HardwareSerial *printerSerial,
-  std::function<std::list<String>(void)> getSerialStringCallback,
-  char printKey,
-  int printDelay
+  HardwareSerial *printSerial,
+  int serialBaudRate
 )
 {
-  PrinterSerial = printerSerial;
-  GetStringListCallback = getSerialStringCallback;
-  PrintKey = printKey;
-  PrintDelay = printDelay;
-  PreviousPrintTime = 0;
+  PrintSerial = printSerial;
+  SerialBaudRate = serialBaudRate;
 }
 
-void SerialPrinter::SerialPrintln()
+void SerialPrinter::Begin()
 {
-  uint32_t currentTime = millis();
-  if (currentTime - PreviousPrintTime > PrintDelay) {
-
-    PrinterSerial->println(
-      GetPrintString()
-    );
-
-    PreviousPrintTime = currentTime;
-  }
+  PrintSerial->begin(SerialBaudRate);
 }
 
-String SerialPrinter::GetPrintString()
+void SerialPrinter::Print(SerialValue *value)
 {
-  std::list<String> stringList = GetStringListCallback();
-  String outputString = "";
-  char wordSeparator = 'a';
+  PrintSerial->print(value->ToSerialString());
+}
 
-  outputString += "[" + String(PrintKey) + "]";
+void SerialPrinter::Println(SerialValue *value)
+{
+  PrintSerial->println(value->ToSerialString());
+}
 
-  std::list<String>::iterator it;
-  for (it = stringList.begin(); it != stringList.end(); it++)
-  {
-    outputString += *it;
-    
-    if (std::next(it) != stringList.end())
-    {
-      outputString += (wordSeparator++);
-    }
-  }
-  
-  return "<" + outputString + ">";
+void SerialPrinter::Flush()
+{
+  PrintSerial->flush();
 }

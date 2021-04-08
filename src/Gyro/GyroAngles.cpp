@@ -63,29 +63,13 @@ float GyroAngles::GetRadians(float degrees) {
   return degrees * TO_RADIANS_MULTIPLIER;
 }
 
-std::list<String> GyroAngles::ToStringList()
+GyroSerialValue* GyroAngles::GetSerialValue()
 {
-  std::list<String> outputList;
-
-  outputList.push_back(
-    String(millis())
+  return new GyroSerialValue(
+    (long)millis(),
+    CalibrationDone,
+    Pitch,
+    Roll,
+    Yaw
   );
-
-  outputList.push_back(
-    String(CalibrationDone)
-  );
-
-  outputList.push_back(
-    String(Pitch, 4)
-  );
-
-  outputList.push_back(
-    String(Roll, 4)
-  );
-
-  outputList.push_back(
-    String(Yaw, 4)
-  );
-
-  return outputList;
 }

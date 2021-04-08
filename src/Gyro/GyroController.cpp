@@ -10,9 +10,9 @@ GyroController::GyroController()
   MyGyro->Setup();
 }
 
-std::list<String> GyroController::GetPrintStrings()
+GyroSerialValue* GyroController::GetSerialValue()
 {
-  return MyGyroAngles->ToStringList();
+  return MyGyroAngles->GetSerialValue();
 }
 
 void GyroController::Loop()

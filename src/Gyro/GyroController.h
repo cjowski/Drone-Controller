@@ -1,14 +1,15 @@
 #ifndef GYRO_CONTROLLER_H
 #define GYRO_CONTROLLER_H
 
-  #include "Gyro/Gyro.h"
-  #include "Gyro/GyroAngles.h"
+  #include "Gyro.h"
+  #include "GyroAngles.h"
+  #include "GyroSerialValue.h"
 
   class GyroController
   {
     public:
     GyroController();
-    std::list<String> GetPrintStrings();
+    GyroSerialValue *GetSerialValue();
     void Loop();
 
     private:

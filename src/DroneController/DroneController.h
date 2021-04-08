@@ -1,10 +1,10 @@
 #ifndef DRONE_CONTROLLER_H
 #define DRONE_CONTROLLER_H
 
-  #include "Serial/Printer/SerialPrintController.h"
-  #include "Serial/Reader/Read/String/SerialStringReader.h"
   #include "Fm/FmController.h"
   #include "Gyro/GyroController.h"
+  #include "Serial/Printer/SerialPrintController.h"
+  #include "Serial/Reader/SerialReader.h"
 
   #define HAVE_HWSERIAL1
 
@@ -21,7 +21,7 @@
     private:
     FmController *MyFmController;
     GyroController *MyGyroController;
-    SerialPrintController *MySerialPrintController;
+    std::list<SerialPrintController*> MySerialPrintControllers;
     SerialReader *MySerialReader;
 
     public:

@@ -7,6 +7,7 @@
   #include <wiring_time.h>
   #include <wiring_constants.h>
   #include "GyroOutput.h"
+  #include "GyroSerialValue.h"
 
   class GyroAngles
   {
@@ -30,7 +31,7 @@
     void TryUpdateAngles(GyroOutput gyroOutput);
     float GetConvertedAngle(int16_t input);
     float GetRadians(float degrees);
-    std::list<String> ToStringList();
+    GyroSerialValue *GetSerialValue();
   };
 
 #endif

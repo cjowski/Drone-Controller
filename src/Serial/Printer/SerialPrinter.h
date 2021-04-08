@@ -1,32 +1,21 @@
 #ifndef SERIAL_PRINTER_H
 #define SERIAL_PRINTER_H
 
-  #include <WSerial.h>
-  #include <WString.h>
-  #include <functional>
-  #include <list>
-  #include <wiring_time.h>
+  #include <HardwareSerial.h>
+  #include "Serial/Value/SerialValue.h"
 
   class SerialPrinter
   {
     private:
-    HardwareSerial *PrinterSerial;
-    std::function<std::list<String>(void)> GetStringListCallback;
-    char PrintKey;
-
-    uint32_t PrintDelay;
-    uint32_t PreviousPrintTime;
-
-    String GetPrintString();
-
+    HardwareSerial *PrintSerial;
+    int SerialBaudRate;
+    
     public:
-    SerialPrinter(
-      HardwareSerial *printerSerial,
-      std::function<std::list<String>(void)> getStringListCallback,
-      char printKey,
-      int printDelay
-    );
-    void SerialPrintln();
+    SerialPrinter(HardwareSerial *printSerial, int serialBaudRate);
+    void Begin();
+    void Print(SerialValue *value);
+    void Println(SerialValue *value);
+    void Flush();
   };
 
 #endif

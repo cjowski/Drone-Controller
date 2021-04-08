@@ -32,23 +32,14 @@ FmChannel::SignalState FmChannelsContainer::FmSignalState()
   return FmChannel::SignalState::restoring;
 }
 
-std::list<String> FmChannelsContainer::ToStringList()
+FmChannelsSerialValue* FmChannelsContainer::GetSerialValue()
 {
-  std::list<String> outputList;
-
-  outputList.push_back(
-    String(millis())
+  return new FmChannelsSerialValue(
+    (long)millis(),
+    (int)FmSignalState(),
+    Channels[0].GetValue(),
+    Channels[1].GetValue(),
+    Channels[2].GetValue(),
+    Channels[3].GetValue()
   );
-
-  outputList.push_back(
-    String(FmSignalState())
-  );
-
-  for (int i = 0; i < ChannelsCount; i++) {
-    outputList.push_back(
-      String(Channels[i].GetValue())
-    );
-  }
-
-  return outputList;
 }

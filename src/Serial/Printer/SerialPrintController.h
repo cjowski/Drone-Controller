@@ -1,29 +1,25 @@
-#ifndef SERIAL_PRINT_CONTROLLER_H
-#define SERIAL_PRINT_CONTROLLER_H
+#ifndef PRINT_CONTROLLER_H
+#define PRINT_CONTROLLER_H
 
-  #include "Serial\Printer\SerialPrinter.h"
+  #include <functional>
+  #include <wiring_time.h>
+  #include "SerialPrinter.h"
 
   class SerialPrintController
   {
+    private:
+    SerialPrinter *MySerialPrinter;
+    int PrintDelay;
+    std::function<SerialValue*(void)> GetSerialValue;
+    uint32_t PreviousPrintTime = 0;
+
     public:
     SerialPrintController(
-      HardwareSerial *printerSerial,
-      int serialBaudRate,
-      std::function<std::list<String>(void)> getFmStrings,
-      std::function<std::list<String>(void)> getGyroStrings
+      SerialPrinter *mySerialPrinter,
+      int printDelay,
+      std::function<SerialValue*(void)> getSerialValue
     );
-    void Print();
-
-    private:
-    const int FM_PRINT_KEY = 'F';
-    const int GYRO_PRINT_KEY = 'G';
-    const int FM_PRINT_DELAY = 50;
-    const int GYRO_PRINT_DELAY = 120;
-
-    HardwareSerial *PrinterSerial;
-    int SerialBaudRate;
-    SerialPrinter *SerialPrinterFm;
-    SerialPrinter *SerialPrinterGyro;
+    void Loop();
   };
 
 #endif

@@ -1,34 +1,25 @@
 #include "SerialPrintController.h"
 
 SerialPrintController::SerialPrintController(
-  HardwareSerial *printerSerial,
-  int serialBaudRate,
-  std::function<std::list<String>(void)> getFmStrings,
-  std::function<std::list<String>(void)> getGyroStrings
+  SerialPrinter *mySerialPrinter,
+  int printDelay,
+  std::function<SerialValue*(void)> getSerialValue
 )
 {
-  PrinterSerial = printerSerial;
-  SerialBaudRate = serialBaudRate;
-
-  SerialPrinterFm = new SerialPrinter(
-    PrinterSerial,
-    getFmStrings,
-    FM_PRINT_KEY,
-    FM_PRINT_DELAY
-  );
-
-  SerialPrinterGyro = new SerialPrinter(
-    PrinterSerial,
-    getGyroStrings,
-    GYRO_PRINT_KEY,
-    GYRO_PRINT_DELAY
-  );
+  PrintDelay = printDelay;
+  MySerialPrinter = mySerialPrinter;
+  GetSerialValue = getSerialValue;
 }
 
-void SerialPrintController::Print()
+void SerialPrintController::Loop()
 {
-  PrinterSerial->begin(SerialBaudRate);
-  SerialPrinterFm->SerialPrintln();
-  SerialPrinterGyro->SerialPrintln();
-  PrinterSerial->flush();
+  uint32_t currentTime = millis();
+  if (currentTime - PreviousPrintTime > PrintDelay) {
+    MySerialPrinter->Begin();
+    MySerialPrinter->Println(
+      GetSerialValue()
+    );
+    MySerialPrinter->Flush();
+    PreviousPrintTime = currentTime;
+  }
 }

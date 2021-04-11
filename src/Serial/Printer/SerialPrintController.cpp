@@ -16,10 +16,10 @@ void SerialPrintController::Loop()
   uint32_t currentTime = millis();
   if (currentTime - PreviousPrintTime > PrintDelay) {
     MySerialPrinter->Begin();
-    MySerialPrinter->Println(
-      GetSerialValue()
-    );
+    SerialValue *serialValue = GetSerialValue();
+    MySerialPrinter->Println(serialValue);
     MySerialPrinter->Flush();
     PreviousPrintTime = currentTime;
+    delete serialValue;
   }
 }

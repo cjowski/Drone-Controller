@@ -9,7 +9,7 @@
   {
     private:
     SerialPrinter *MySerialPrinter;
-    int PrintDelay;
+    uint32_t PrintDelay;
     std::function<SerialValue*(void)> GetSerialValue;
     uint32_t PreviousPrintTime = 0;
 

@@ -2,6 +2,7 @@
 #define SERIAL_PRINTER_H
 
   #include <HardwareSerial.h>
+  #include <WSerial.h>
   #include "Serial/Value/SerialValue.h"
 
   class SerialPrinter

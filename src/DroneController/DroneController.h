@@ -5,6 +5,9 @@
   #include "Gyro/GyroController.h"
   #include "Serial/Printer/SerialPrintController.h"
   #include "Serial/Reader/SerialReader.h"
+  #include "Task/TaskController/TaskController.h"
+  #include "Task/UndefinedSerialTask.h"
+  #include "Task/SayHiToEsp/SayHiToEspTask.h"
 
   #define HAVE_HWSERIAL1
 
@@ -22,11 +25,15 @@
     FmController *MyFmController;
     GyroController *MyGyroController;
     std::list<SerialPrintController*> MySerialPrintControllers;
+    SerialPrinter *MySerialPrinter;
     SerialReader *MySerialReader;
+    TaskController *MyTaskController;
 
     public:
     DroneController();
     void Loop();
+    void ProcessSerialValue(UndefinedSerialValue serialValue);
+    void ProcessSerialValueTask(UndefinedSerialTask serialTask);
   };
 
 #endif

@@ -1,16 +1,16 @@
-#include "Timer3.h"
+#include "FmTimer3.h"
 
-Timer3::Timer3(HardwareTimer *timer)
+FmTimer3::FmTimer3(HardwareTimer *timer)
 {
   Timer = timer;
-  Channels = new TimerChannel[4];
-  Channels[0] = TimerChannel(1, timer);
-  Channels[1] = TimerChannel(2, timer);
-  Channels[2] = TimerChannel(3, timer);
-  Channels[3] = TimerChannel(4, timer);
+  Channels = new FmTimerChannel[4];
+  Channels[0] = FmTimerChannel(1, timer);
+  Channels[1] = FmTimerChannel(2, timer);
+  Channels[2] = FmTimerChannel(3, timer);
+  Channels[3] = FmTimerChannel(4, timer);
 }
 
-void Timer3::Setup()
+void FmTimer3::Setup()
 {
   TIM3->CR1 = TIM_CR1_CEN;
   TIM3->CR2 = 0;
@@ -25,7 +25,7 @@ void Timer3::Setup()
   TIM3->DCR = 0;
 }
 
-void Timer3::SetupChannel(int channelNo)
+void FmTimer3::SetupChannel(int channelNo)
 {
   switch(channelNo)
   {

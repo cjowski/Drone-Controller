@@ -13,7 +13,7 @@ void FmChannelsContainer::UpdateChannelsValues()
   }
 }
 
-FmChannel::SignalState FmChannelsContainer::FmSignalState()
+FmChannel::SignalState FmChannelsContainer::GetFmSignalState()
 {
   int activeChannelsCount = 0;
   for (int i = 0; i < ChannelsCount; i++) {
@@ -32,11 +32,20 @@ FmChannel::SignalState FmChannelsContainer::FmSignalState()
   return FmChannel::SignalState::restoring;
 }
 
+int32_t FmChannelsContainer::GetFmChannelValue(int channelNo)
+{
+  if (channelNo < 0 || channelNo >= ChannelsCount)
+  {
+    return -1;
+  }
+  return Channels[channelNo].GetValue();
+}
+
 FmChannelsSerialValue* FmChannelsContainer::GetSerialValue()
 {
   return new FmChannelsSerialValue(
     (long)millis(),
-    (int)FmSignalState(),
+    (int)GetFmSignalState(),
     Channels[0].GetValue(),
     Channels[1].GetValue(),
     Channels[2].GetValue(),

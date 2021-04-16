@@ -16,8 +16,6 @@
     uint32_t stopUpdateUntilTime = 0;
     uint32_t startCheckPositiveSignalsAtTime = 0;
     const int MAX_PREVIOUS_VALUES_LENGTH = 10;
-    const int MIN_VALUE = 800;
-    const int MAX_VALUE = 2600;
     const int MAX_ALLOWED_WRONG_VALUES = 1;
     const int ALLOWED_VALUE_DIFFERENCE = 500;
     const int WRONG_SIGNAL_WAIT_TIME_MILLIS = 500;
@@ -30,6 +28,8 @@
     bool PositiveSignalValid(int32_t newValue);
 
     public:
+    static const int MIN_VALUE = 800;
+    static const int MAX_VALUE = 2600;
     enum SignalState {
       inactive = 0,
       active = 1,

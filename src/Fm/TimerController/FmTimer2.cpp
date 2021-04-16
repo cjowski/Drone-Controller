@@ -1,16 +1,16 @@
-#include "Timer1.h"
+#include "FmTimer2.h"
 
-Timer1::Timer1(HardwareTimer *timer)
+FmTimer2::FmTimer2(HardwareTimer *timer)
 {
   Timer = timer;
-  Channels = new TimerChannel[4];
-  Channels[0] = TimerChannel(1, timer);
-  Channels[1] = TimerChannel(2, timer);
-  Channels[2] = TimerChannel(3, timer);
-  Channels[3] = TimerChannel(4, timer);
+  Channels = new FmTimerChannel[4];
+  Channels[0] = FmTimerChannel(1, timer);
+  Channels[1] = FmTimerChannel(2, timer);
+  Channels[2] = FmTimerChannel(3, timer);
+  Channels[3] = FmTimerChannel(4, timer);
 }
 
-void Timer1::Setup()
+void FmTimer2::Setup()
 {
   TIM2->CR1 = TIM_CR1_CEN;
   TIM2->CR2 = 0;
@@ -25,7 +25,7 @@ void Timer1::Setup()
   TIM2->DCR = 0;
 }
 
-void Timer1::SetupChannel(int channelNo)
+void FmTimer2::SetupChannel(int channelNo)
 {
   switch(channelNo)
   {
@@ -33,8 +33,8 @@ void Timer1::SetupChannel(int channelNo)
       Channels[0].Setup(
         CH1_PIN,
         TIMER_INPUT_CAPTURE_RISING,
-        &TIM1->CCR1,
-        &TIM1->CCER,
+        &TIM2->CCR1,
+        &TIM2->CCER,
         TIM_CCER_CC1P
       );
       break;
@@ -42,8 +42,8 @@ void Timer1::SetupChannel(int channelNo)
       Channels[1].Setup(
         CH2_PIN,
         TIMER_INPUT_CAPTURE_RISING,
-        &TIM1->CCR2,
-        &TIM1->CCER,
+        &TIM2->CCR2,
+        &TIM2->CCER,
         TIM_CCER_CC2P
       );
       break;
@@ -51,8 +51,8 @@ void Timer1::SetupChannel(int channelNo)
       Channels[2].Setup(
         CH3_PIN,
         TIMER_INPUT_CAPTURE_RISING,
-        &TIM1->CCR3,
-        &TIM1->CCER,
+        &TIM2->CCR3,
+        &TIM2->CCER,
         TIM_CCER_CC3P
       );
       break;
@@ -60,8 +60,8 @@ void Timer1::SetupChannel(int channelNo)
       Channels[3].Setup(
         CH4_PIN,
         TIMER_INPUT_CAPTURE_RISING,
-        &TIM1->CCR4,
-        &TIM1->CCER,
+        &TIM2->CCR4,
+        &TIM2->CCER,
         TIM_CCER_CC4P
       );
   };

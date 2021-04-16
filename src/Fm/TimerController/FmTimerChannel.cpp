@@ -1,6 +1,6 @@
-#include "TimerChannel.h"
+#include "FmTimerChannel.h"
 
-TimerChannel::TimerChannel(int channelNo, HardwareTimer *timer)
+FmTimerChannel::FmTimerChannel(int channelNo, HardwareTimer *timer)
 {
   Timer = timer;
   ChannelNo = channelNo;
@@ -10,7 +10,7 @@ TimerChannel::TimerChannel(int channelNo, HardwareTimer *timer)
   OutputValue = 0;
 }
 
-void TimerChannel::Setup(
+void FmTimerChannel::Setup(
   uint8_t channelPin,
   TimerModes_t timerMode,
   volatile uint32_t *captureCompareReg,
@@ -36,7 +36,7 @@ void TimerChannel::Setup(
   Initialized = true;
 }
 
-void TimerChannel::InterruptHandler(
+void FmTimerChannel::InterruptHandler(
   uint8_t channelPin,
   int32_t *outputValue,
   int32_t *startValue,

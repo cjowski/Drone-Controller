@@ -1,18 +1,18 @@
-#ifndef TIMER_3_H
-#define TIMER_3_H
+#ifndef FM_TIMER_3_H
+#define FM_TIMER_3_H
 
-  #include "TimerController.h"
+  #include "FmTimerController.h"
 
   #define CH1_PIN PA6
   #define CH2_PIN PA7
   #define CH3_PIN PB0
   #define CH4_PIN PB1
 
-  class Timer3 : public TimerController
+  class FmTimer3 : public FmTimerController
   {
     public:
-    Timer3() {};
-    Timer3(HardwareTimer *timer);
+    FmTimer3() {};
+    FmTimer3(HardwareTimer *timer);
     virtual void Setup();
 
     protected:

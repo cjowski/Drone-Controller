@@ -1,13 +1,13 @@
-#ifndef TIMER_CONTROLLER_H
-#define TIMER_CONTROLLER_H
+#ifndef FM_TIMER_CONTROLLER_H
+#define FM_TIMER_CONTROLLER_H
 
-  #include "TimerChannel.h"
+  #include "FmTimerChannel.h"
   
-  class TimerController
+  class FmTimerController
   {
     public:
-    TimerController() { };
-    TimerController(HardwareTimer *timer) { };
+    FmTimerController() { };
+    FmTimerController(HardwareTimer *timer) { };
     virtual void Setup() = 0;
     virtual void SetupChannel(int channelNo);
     void Resume();
@@ -16,7 +16,7 @@
 
     protected:
     HardwareTimer *Timer;
-    TimerChannel *Channels;
+    FmTimerChannel *Channels;
   };
 
 #endif

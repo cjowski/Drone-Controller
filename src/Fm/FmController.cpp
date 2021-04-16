@@ -2,25 +2,35 @@
 
 FmController::FmController()
 {
-  MyTimerController = new Timer2(&HardwareTimer2);
-  MyTimerController->Setup();
-  MyTimerController->SetupChannel(1);
-  MyTimerController->SetupChannel(2);
-  MyTimerController->SetupChannel(3);
-  MyTimerController->SetupChannel(4);
-  MyTimerController->Resume();
+  MyFmTimerController = new FmTimer2(&HardwareTimer2);
+  MyFmTimerController->Setup();
+  MyFmTimerController->SetupChannel(1);
+  MyFmTimerController->SetupChannel(2);
+  MyFmTimerController->SetupChannel(3);
+  MyFmTimerController->SetupChannel(4);
+  MyFmTimerController->Resume();
 
   FmChannel *channels = new FmChannel[FM_CHANNELS_COUNT];
   for (int i = 0; i < FM_CHANNELS_COUNT; i++) {
     channels[i].AttachUpdateValueCallback(
       [&, i, channels] () {
         channels[i].TrySetNewValue(
-          MyTimerController->GetChannelValue(i + 1)
+          MyFmTimerController->GetChannelValue(i + 1)
         );
       }
     );
   }
   MyFmChannelsContainer = new FmChannelsContainer(channels, FM_CHANNELS_COUNT);
+}
+
+FmChannel::SignalState FmController::GetFmSignalState()
+{
+  return MyFmChannelsContainer->GetFmSignalState();
+}
+
+int32_t FmController::GetFmChannelValue(int channelNo)
+{
+  return MyFmChannelsContainer->GetFmChannelValue(channelNo);
 }
 
 FmChannelsSerialValue* FmController::GetSerialValue()

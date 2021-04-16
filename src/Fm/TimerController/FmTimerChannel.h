@@ -1,15 +1,15 @@
-#ifndef TIMER_CHANNEL_H
-#define TIMER_CHANNEL_H
+#ifndef FM_TIMER_CHANNEL_H
+#define FM_TIMER_CHANNEL_H
 
   #include <pins_arduino.h>
   #include <HardwareTimer.h>
   #include <PinConfigured.h>
 
-  class TimerChannel
+  class FmTimerChannel
   {
     private:
-    TimerChannel() { };
-    TimerChannel(int channelNo, HardwareTimer *timer);
+    FmTimerChannel() { };
+    FmTimerChannel(int channelNo, HardwareTimer *timer);
     HardwareTimer *Timer;
     int ChannelNo;
     uint8_t ChannelPin;
@@ -34,10 +34,10 @@
       unsigned long captureCompareOutPolarity
     );
 
-    friend class TimerController;
-    friend class Timer1;
-    friend class Timer2;
-    friend class Timer3;
+    friend class FmTimerController;
+    friend class FmTimer1;
+    friend class FmTimer2;
+    friend class FmTimer3;
   };
 
 #endif

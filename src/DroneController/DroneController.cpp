@@ -14,6 +14,16 @@ DroneController::DroneController()
     },
     MyTaskController
   );
+  MyMotor = new Motor(
+    FmChannel::MIN_VALUE,
+    FmChannel::MAX_VALUE,
+    [&] () -> bool {
+      return MyFmController->GetFmSignalState() == FmChannel::active;
+    },
+    [&] () -> int {
+      return MyFmController->GetFmChannelValue(2);
+    }
+  );
 }
 
 void DroneController::Loop()
@@ -22,4 +32,5 @@ void DroneController::Loop()
   MyGyroController->Loop();
   MySerialController->Loop();
   MyTaskController->Loop();
+  MyMotor->Loop();
 }

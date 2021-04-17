@@ -2,7 +2,7 @@
 
 FmController::FmController()
 {
-  MyFmTimerController = new FmTimer2(&HardwareTimer2);
+  MyFmTimerController = new FmTimer2();
   MyFmTimerController->Setup();
   MyFmTimerController->SetupChannel(1);
   MyFmTimerController->SetupChannel(2);

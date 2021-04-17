@@ -46,8 +46,8 @@ int Motor::MapFmChannelValueToSpeed(int fmChannelValue)
 void Motor::Loop()
 {
   int currentSpeed = GetSpeed();
-  Serial.println(
-    currentSpeed
-  );
+  // Serial.println(
+  //   currentSpeed
+  // );
   PreviousSpeed = currentSpeed;
 }

@@ -8,22 +8,11 @@
   class FmTimerChannel
   {
     private:
-    FmTimerChannel() { };
-    FmTimerChannel(int channelNo, HardwareTimer *timer);
-    HardwareTimer *Timer;
     int ChannelNo;
     uint8_t ChannelPin;
-    bool Initialized;
-    int32_t StartValue;
-    int32_t OutputValue;
-
-    virtual void Setup(
-      uint8_t channelPin,
-      TimerModes_t timerMode,
-      volatile uint32_t *captureCompareReg,
-      volatile uint32_t *captureCompareEnableReg,
-      unsigned long captureCompareOutPolarity
-    );
+    HardwareTimer *Timer;
+    int32_t StartValue = 0;
+    int32_t OutputValue = 0;
 
     static void InterruptHandler(
       uint8_t channelPin,
@@ -34,10 +23,19 @@
       unsigned long captureCompareOutPolarity
     );
 
-    friend class FmTimerController;
-    friend class FmTimer1;
-    friend class FmTimer2;
-    friend class FmTimer3;
+    public:
+    FmTimerChannel(
+      int channelNo,
+      int channelPin,
+      HardwareTimer *timer
+    );
+    void Setup(
+      volatile uint32_t *captureCompareReg,
+      volatile uint32_t *captureCompareEnableReg,
+      unsigned long captureCompareOutPolarity
+    );
+    int GetChannelNo();
+    int32_t GetOutputValue();
   };
 
 #endif

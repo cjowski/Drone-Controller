@@ -15,7 +15,7 @@ DroneController::DroneController()
     MyTaskController
   );
   MyMotor = new Motor(
-    FmChannel::MIN_VALUE,
+    1000,
     FmChannel::MAX_VALUE,
     [&] () -> bool {
       return MyFmController->GetFmSignalState() == FmChannel::active;

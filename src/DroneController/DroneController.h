@@ -4,7 +4,8 @@
   #include "Fm/FmController.h"
   #include "Gyro/GyroController.h"
   #include "Serial/SerialController.h"
-  #include "Motor/Motor.h"
+  #include "Motor/MotorController.h"
+  #include "Motor/Mode/MotorModeChannelMap.h"
 
   class DroneController
   {
@@ -13,7 +14,7 @@
     GyroController *MyGyroController;
     SerialController *MySerialController;
     TaskController *MyTaskController;
-    Motor *MyMotor;
+    MotorController *MyMotorController;
 
     public:
     DroneController();

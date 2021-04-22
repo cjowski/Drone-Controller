@@ -20,6 +20,7 @@
       MotorTimerChannel *timerChannel,
       MotorMode *mode
     );
+    uint32_t GetPreviousSpeed();
     void Loop();
   };
 

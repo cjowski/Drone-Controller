@@ -14,6 +14,17 @@ MotorController::MotorController(MotorMode *motorMode)
   }
 }
 
+MotorsSerialValue *MotorController::GetSerialValue()
+{
+  return new MotorsSerialValue(
+    (long)millis(),
+    Motors[0]->GetPreviousSpeed(),
+    Motors[1]->GetPreviousSpeed(),
+    Motors[2]->GetPreviousSpeed(),
+    Motors[3]->GetPreviousSpeed()
+  );
+}
+
 void MotorController::Loop()
 {
   for (int i = 0; i < MOTORS_COUNT; i++)

@@ -3,6 +3,7 @@
 SerialController::SerialController(
   std::function<SerialValue*(void)> getFmSerialValue,
   std::function<SerialValue*(void)> getGyroSerialValue,
+  std::function<SerialValue*(void)> getMotorsSerialValue,
   TaskController *myTaskController
 )
 {
@@ -22,6 +23,14 @@ SerialController::SerialController(
       MySerialPrinter,
       120,
       getGyroSerialValue
+    )
+  );
+
+  MySerialPrintControllers.push_back(
+    new SerialPrintController(
+      MySerialPrinter,
+      120,
+      getMotorsSerialValue
     )
   );
 

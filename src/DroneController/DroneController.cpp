@@ -4,16 +4,6 @@ DroneController::DroneController()
 {
   MyFmController = new FmController();
   MyGyroController = new GyroController();
-  MyTaskController = new TaskController();
-  MySerialController = new SerialController(
-    [&] () -> SerialValue* {
-      return MyFmController->GetSerialValue();
-    },
-    [&] () -> SerialValue* {
-      return MyGyroController->GetSerialValue();
-    },
-    MyTaskController
-  );
   MyMotorController = new MotorController(
     new MotorModeChannelMap(
       FmChannel::MIN_VALUE,
@@ -26,13 +16,26 @@ DroneController::DroneController()
       }
     )
   );
+  MyTaskController = new TaskController();
+  MySerialController = new SerialController(
+    [&] () -> SerialValue* {
+      return MyFmController->GetSerialValue();
+    },
+    [&] () -> SerialValue* {
+      return MyGyroController->GetSerialValue();
+    },
+    [&] () -> SerialValue* {
+      return MyMotorController->GetSerialValue();
+    },
+    MyTaskController
+  );
 }
 
 void DroneController::Loop()
 {
   MyFmController->Loop();
   MyGyroController->Loop();
+  MyMotorController->Loop();
   MySerialController->Loop();
   MyTaskController->Loop();
-  MyMotorController->Loop();
 }

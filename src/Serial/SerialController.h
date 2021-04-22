@@ -32,6 +32,7 @@
     SerialController(
       std::function<SerialValue*(void)> getFmSerialValue,
       std::function<SerialValue*(void)> getGyroSerialValue,
+      std::function<SerialValue*(void)> getMotorsSerialValue,
       TaskController *myTaskController
     );
     void Loop();

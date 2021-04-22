@@ -3,6 +3,7 @@
 
   #include "Motor.h"
   #include "Timer/MotorTimer1.h"
+  #include "MotorsSerialValue.h"
 
   class MotorController
   {
@@ -13,6 +14,7 @@
 
     public:
     MotorController(MotorMode *motorMode);
+    MotorsSerialValue *GetSerialValue();
     void Loop();
   };
 

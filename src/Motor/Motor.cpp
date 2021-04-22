@@ -31,16 +31,14 @@ uint32_t Motor::GetSpeed()
   return speed.Value;
 }
 
+uint32_t Motor::GetPreviousSpeed()
+{
+  return PreviousSpeed;
+}
+
 void Motor::Loop()
 {
   uint32_t currentSpeed = GetSpeed();
   TimerChannel->SetValue(currentSpeed);
   PreviousSpeed = currentSpeed;
-
-  long currentTime = millis();
-  if (currentTime - PreviousPrintTime > 500)
-  {
-    Serial.println(currentSpeed);
-    PreviousPrintTime = currentTime;
-  }
 }

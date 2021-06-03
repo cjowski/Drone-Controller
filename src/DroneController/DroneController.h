@@ -6,6 +6,7 @@
   #include "Serial/SerialController.h"
   #include "Motor/MotorController.h"
   #include "Motor/Mode/MotorModeChannelMap.h"
+  #include "Board/BoardSetup.h"
 
   class DroneController
   {
@@ -17,7 +18,7 @@
     MotorController *MyMotorController;
 
     public:
-    DroneController();
+    DroneController(BoardSetup *boardSetup);
     void Loop();
   };
 

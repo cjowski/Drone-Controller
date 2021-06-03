@@ -1,14 +1,14 @@
 #ifndef FM_CONTROLLER_H
 #define FM_CONTROLLER_H
 
-  #include "Fm/Timer/FmTimer2.h"
+  #include "Fm/Timer/FmTimerController.h"
   #include "Fm/FmChannels/FmChannelsContainer.h"
   #include "Fm/FmChannels/FmChannelsSerialValue.h"
 
   class FmController
   {
     public:
-    FmController();
+    FmController(const BoardTimer *boardTimer);
     FmChannel::SignalState GetFmSignalState();
     int32_t GetFmChannelValue(int channelNo);
     FmChannelsSerialValue *GetSerialValue();

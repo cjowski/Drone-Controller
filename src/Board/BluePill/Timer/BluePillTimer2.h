@@ -1,23 +1,20 @@
-#ifndef FM_TIMER_3_H
-#define FM_TIMER_3_H
+#ifndef BLUE_PILL_TIMER_2_H
+#define BLUE_PILL_TIMER_2_H
 
-  #include "FmTimerController.h"
+  #include "Board/BoardTimer.h"
 
-  class FmTimer3 : public FmTimerController
+  class BluePillTimer2 : public BoardTimer
   {
     private:
     static const int TIMER_CHANNELS_COUNT = 4;
     const uint8_t ChannelPins[TIMER_CHANNELS_COUNT] = {
-      PA6,
-      PA7,
-      PB0,
-      PB1
+      PA15,
+      PB3,
+      PA2,
+      PA3
     };
 
     public:
-    FmTimer3() {
-      Timer = new HardwareTimer(this->TIMER_BASE());
-    };
     const uint8_t *CHANNEL_PINS() const {
       const uint8_t *array = ChannelPins;
       return array;
@@ -26,7 +23,7 @@
       return TIMER_CHANNELS_COUNT;
     };
     TIM_TypeDef *TIMER_BASE() const {
-      return TIM3;
+      return (TIM_TypeDef *) TIM1;
     };
   };
 

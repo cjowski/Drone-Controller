@@ -1,13 +1,17 @@
 #include "SerialController.h"
 
 SerialController::SerialController(
+  const BoardSerial *espCommunicationSerial,
   std::function<SerialValue*(void)> getFmSerialValue,
   std::function<SerialValue*(void)> getGyroSerialValue,
   std::function<SerialValue*(void)> getMotorsSerialValue,
   TaskController *myTaskController
 )
 {
-  HardwareSerial* stmEspSerial = new HardwareSerial(SERIAL3_RX_PIN, SERIAL3_TX_PIN);
+  HardwareSerial* stmEspSerial = new HardwareSerial(
+    espCommunicationSerial->RX_PIN(),
+    espCommunicationSerial->TX_PIN()
+  );
   MySerialPrinter = new SerialPrinter(stmEspSerial, SERIAL_BAUD_RATE);
 
   MySerialPrintControllers.push_back(

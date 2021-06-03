@@ -1,23 +1,20 @@
-#ifndef FM_TIMER_2_H
-#define FM_TIMER_2_H
+#ifndef NUCLEO_L476RG_TIMER_3_H
+#define NUCLEO_L476RG_TIMER_3_H
 
-  #include "FmTimerController.h"
+  #include "Board/BoardTimer.h"
 
-  class FmTimer2 : public FmTimerController
+  class NucleoL476rgTimer3 : public BoardTimer
   {
     private:
     static const int TIMER_CHANNELS_COUNT = 4;
     const uint8_t ChannelPins[TIMER_CHANNELS_COUNT] = {
-      PA0,
-      PA1,
-      PB10,
-      PB11
+      PA6,
+      PA7,
+      PB0,
+      PB1
     };
 
     public:
-    FmTimer2() {
-      Timer = new HardwareTimer(this->TIMER_BASE());
-    };
     const uint8_t *CHANNEL_PINS() const {
       const uint8_t *array = ChannelPins;
       return array;
@@ -26,7 +23,7 @@
       return TIMER_CHANNELS_COUNT;
     };
     TIM_TypeDef *TIMER_BASE() const {
-      return TIM2;
+      return (TIM_TypeDef *) TIM3;
     };
   };
 

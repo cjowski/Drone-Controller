@@ -3,21 +3,18 @@
 
   #include <list>
   #include "FmTimerChannel.h"
+  #include "Board/BoardTimer.h"
   
   class FmTimerController
   {
     private:
+    HardwareTimer *Timer;
+    const BoardTimer *FmBoardTimer;
     std::list<FmTimerChannel*> Channels;
     const int MAX_CHANNELS_COUNT = 4;
 
-    protected:
-    HardwareTimer *Timer;
-
     public:
-    FmTimerController() { };
-    virtual const uint8_t *CHANNEL_PINS() const = 0;
-    virtual int CHANNELS_COUNT() const = 0;
-    virtual TIM_TypeDef *TIMER_BASE() const = 0;
+    FmTimerController(const BoardTimer *boardTimer);
     void Setup();
     void SetupChannel(int channelNo);
     void Resume();

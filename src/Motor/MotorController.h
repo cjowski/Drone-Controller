@@ -2,7 +2,6 @@
 #define MOTOR_CONTROLLER_H
 
   #include "Motor.h"
-  #include "Timer/MotorTimer1.h"
   #include "MotorsSerialValue.h"
 
   class MotorController
@@ -13,7 +12,10 @@
     MotorTimerController *TimerController;
 
     public:
-    MotorController(MotorMode *motorMode);
+    MotorController(
+      MotorMode *motorMode,
+      const BoardTimer *motorBoardTimer
+    );
     MotorsSerialValue *GetSerialValue();
     void Loop();
   };

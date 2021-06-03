@@ -1,8 +1,10 @@
 #include "DroneController.h"
 
-DroneController::DroneController()
+DroneController::DroneController(
+  BoardSetup *boardSetup
+)
 {
-  MyFmController = new FmController();
+  MyFmController = new FmController(boardSetup->FM_BOARD_TIMER());
   MyGyroController = new GyroController();
   MyMotorController = new MotorController(
     new MotorModeChannelMap(
@@ -14,10 +16,12 @@ DroneController::DroneController()
       [&] () -> int {
         return MyFmController->GetFmChannelValue(2);
       }
-    )
+    ),
+    boardSetup->MOTOR_BOARD_TIMER()
   );
   MyTaskController = new TaskController();
   MySerialController = new SerialController(
+    boardSetup->ESP_COMMUNICATION_SERIAL(),
     [&] () -> SerialValue* {
       return MyFmController->GetSerialValue();
     },

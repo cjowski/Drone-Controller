@@ -1,23 +1,20 @@
-#ifndef MOTOR_TIMER_1_H
-#define MOTOR_TIMER_1_H
+#ifndef NUCLEO_L476RG_TIMER_2_H
+#define NUCLEO_L476RG_TIMER_2_H
 
-  #include "MotorTimerController.h"
+  #include "Board/BoardTimer.h"
 
-  class MotorTimer1 : public MotorTimerController
+  class NucleoL476rgTimer2 : public BoardTimer
   {
     private:
     static const int TIMER_CHANNELS_COUNT = 4;
     const uint8_t ChannelPins[TIMER_CHANNELS_COUNT] = {
-      PA8,
-      PA9,
-      PA10,
-      PA11
+      PA0,
+      PA1,
+      PB10,
+      PB11
     };
 
     public:
-    MotorTimer1() {
-      Timer = new HardwareTimer(this->TIMER_BASE());
-    };
     const uint8_t *CHANNEL_PINS() const {
       const uint8_t *array = ChannelPins;
       return array;
@@ -26,7 +23,7 @@
       return TIMER_CHANNELS_COUNT;
     };
     TIM_TypeDef *TIMER_BASE() const {
-      return TIM1;
+      return (TIM_TypeDef *) TIM2; //0x40000000UL + 0x00010000UL + 0x0000UL;
     };
   };
 

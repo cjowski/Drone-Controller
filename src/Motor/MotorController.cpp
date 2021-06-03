@@ -1,8 +1,11 @@
 #include "MotorController.h"
 
-MotorController::MotorController(MotorMode *motorMode)
+MotorController::MotorController(
+  MotorMode *motorMode,
+  const BoardTimer *motorBoardTimer
+)
 {
-  TimerController = new MotorTimer1();
+  TimerController = new MotorTimerController(motorBoardTimer);
   TimerController->Setup();
   for (int i = 0; i < MOTORS_COUNT; i++)
   {

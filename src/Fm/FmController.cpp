@@ -1,8 +1,8 @@
 #include "FmController.h"
 
-FmController::FmController()
+FmController::FmController(const BoardTimer *fmBoardTimer)
 {
-  MyFmTimerController = new FmTimer2();
+  MyFmTimerController = new FmTimerController(fmBoardTimer);
   MyFmTimerController->Setup();
   MyFmTimerController->SetupChannel(1);
   MyFmTimerController->SetupChannel(2);

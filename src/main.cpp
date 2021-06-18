@@ -19,11 +19,11 @@ void setup() {
 
 void loop() {
   droneController->Loop();
-  uint32_t currentTime = millis();
-  if (currentTime - previousPrintTime > 1000)
-  {
-    Serial.begin(19200);
-    Serial.println(int(currentTime));
-    previousPrintTime = currentTime;
-  }
+  // uint32_t currentTime = millis();
+  // if (currentTime - previousPrintTime > 1000)
+  // {
+  //   Serial.begin(19200);
+  //   Serial.println(int(currentTime));
+  //   previousPrintTime = currentTime;
+  // }
 }

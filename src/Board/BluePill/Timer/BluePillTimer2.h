@@ -8,8 +8,8 @@
     private:
     static const int TIMER_CHANNELS_COUNT = 4;
     const uint8_t ChannelPins[TIMER_CHANNELS_COUNT] = {
-      PA15,
-      PB3,
+      PA0,
+      PA1,
       PA2,
       PA3
     };
@@ -23,7 +23,7 @@
       return TIMER_CHANNELS_COUNT;
     };
     TIM_TypeDef *TIMER_BASE() const {
-      return (TIM_TypeDef *) TIM1;
+      return (TIM_TypeDef *) TIM2;
     };
   };
 

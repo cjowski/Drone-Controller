@@ -11,13 +11,13 @@
   {
     public:
     const BoardSerial *ESP_COMMUNICATION_SERIAL() const {
-      return new BluePillSerial3();
+      return new BluePillSerial1();
     };
     const BoardTimer *FM_BOARD_TIMER() const {
-      return new BluePillTimer1();
+      return new BluePillTimer2();
     };
     const BoardTimer *MOTOR_BOARD_TIMER() const {
-      return new BluePillTimer2();
+      return new BluePillTimer1();
     };
   };
 

@@ -4,7 +4,8 @@ SayHiToEspTask::SayHiToEspTask(
   int id,
   int espTaskID,
   int startTime,
-  SerialPrinter *serialPrinter
+  SerialPrinter *serialPrinter,
+  bool debugMode
 )
 {
   ID = id;
@@ -12,6 +13,7 @@ SayHiToEspTask::SayHiToEspTask(
   StartTime = startTime;
   PreviousStepTime = startTime;
   Printer = serialPrinter;
+  DebugMode = debugMode;
 }
 
 void SayHiToEspTask::Loop()
@@ -22,8 +24,8 @@ void SayHiToEspTask::Loop()
     IsGreetingChosen = true;
   }
   SayHiToEspMessage *message = new SayHiToEspMessage(ID, EspTaskID, ChosenGreeting);
-  Serial.println(message->ToSerialString());
-  Printer->Println(message);
+  if (DebugMode) Serial.println(message->ToString());
+  Printer->Println(message->GetSerialEncoderInput());
   delete message;
 }
 

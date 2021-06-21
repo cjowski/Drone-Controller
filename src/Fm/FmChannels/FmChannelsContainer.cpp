@@ -41,14 +41,17 @@ int32_t FmChannelsContainer::GetFmChannelValue(int channelNo)
   return Channels[channelNo].GetValue();
 }
 
-FmChannelsSerialValue* FmChannelsContainer::GetSerialValue()
+SerialEncoderInput* FmChannelsContainer::GetSerialEncoderInput()
 {
-  return new FmChannelsSerialValue(
-    (long)millis(),
-    (int)GetFmSignalState(),
-    Channels[0].GetValue(),
-    Channels[1].GetValue(),
-    Channels[2].GetValue(),
-    Channels[3].GetValue()
+  std::list<String> texts;
+  texts.push_back(String((long)millis()));
+  texts.push_back(String((int)GetFmSignalState()));
+  for (int i = 0; i < ChannelsCount; i++)
+  {
+    texts.push_back(String(Channels[i].GetValue()));
+  }
+  return new StringListEncoderInput(
+    SERIAL_KEY,
+    texts
   );
 }

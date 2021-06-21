@@ -17,14 +17,18 @@ MotorController::MotorController(
   }
 }
 
-MotorsSerialValue *MotorController::GetSerialValue()
+SerialEncoderInput *MotorController::GetSerialEncoderInput()
 {
-  return new MotorsSerialValue(
-    (long)millis(),
-    Motors[0]->GetPreviousSpeed(),
-    Motors[1]->GetPreviousSpeed(),
-    Motors[2]->GetPreviousSpeed(),
-    Motors[3]->GetPreviousSpeed()
+  std::list<String> texts;
+  texts.push_back(String((long)millis()));
+  for (int i = 0; i < MOTORS_COUNT; i++)
+  {
+    texts.push_back(String(Motors[i]->GetPreviousSpeed()));
+  }
+
+  return new StringListEncoderInput(
+    SERIAL_KEY,
+    texts
   );
 }
 

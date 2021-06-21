@@ -2,9 +2,9 @@
 
 SerialController::SerialController(
   const BoardSerial *espCommunicationSerial,
-  std::function<SerialValue*(void)> getFmSerialValue,
-  std::function<SerialValue*(void)> getGyroSerialValue,
-  std::function<SerialValue*(void)> getMotorsSerialValue,
+  std::function<SerialEncoderInput*(void)> getFmSerialEncoderInput,
+  std::function<SerialEncoderInput*(void)> getGyroSerialEncoderInput,
+  std::function<SerialEncoderInput*(void)> getMotorsSerialEncoderInput,
   TaskController *myTaskController
 )
 {
@@ -12,80 +12,92 @@ SerialController::SerialController(
     espCommunicationSerial->RX_PIN(),
     espCommunicationSerial->TX_PIN()
   );
-  MySerialPrinter = new SerialPrinter(stmEspSerial, SERIAL_BAUD_RATE);
+  Printer = new SerialPrinter(
+    new StringListEncoder(false),
+    stmEspSerial,
+    SERIAL_BAUD_RATE
+  );
 
-  MySerialPrintControllers.push_back(
-    new SerialPrintController(
-      MySerialPrinter,
+  PeriodicalPrinters.push_back(
+    new SerialPeriodicalPrinter(
+      Printer,
       50,
-      getFmSerialValue
+      getFmSerialEncoderInput,
+      false
     )
   );
 
-  MySerialPrintControllers.push_back(
-    new SerialPrintController(
-      MySerialPrinter,
+  PeriodicalPrinters.push_back(
+    new SerialPeriodicalPrinter(
+      Printer,
       120,
-      getGyroSerialValue
+      getGyroSerialEncoderInput,
+      false
     )
   );
 
-  MySerialPrintControllers.push_back(
-    new SerialPrintController(
-      MySerialPrinter,
+  PeriodicalPrinters.push_back(
+    new SerialPeriodicalPrinter(
+      Printer,
       120,
-      getMotorsSerialValue
+      getMotorsSerialEncoderInput,
+      false
     )
   );
 
-  MySerialReader = new SerialReader(stmEspSerial);
+  Reader = new SerialReader(
+    new StringListDecoder(false),
+    stmEspSerial,
+    SERIAL_BAUD_RATE
+  );
+  
   MyTaskController = myTaskController;
 }
 
 void SerialController::Loop()
 {
-  for (auto it = MySerialPrintControllers.begin(); it != MySerialPrintControllers.end(); it++)
+  for (auto it = PeriodicalPrinters.begin(); it != PeriodicalPrinters.end(); it++)
   {
     (*it)->Loop();
   }
-  ProcessSerialValue(
-    MySerialReader->Read()
-  );
+  // ProcessSerialValue(
+  //   Reader->Read()
+  // );
 }
 
-void SerialController::ProcessSerialValue(UndefinedSerialValue serialValue)
-{
-  if (!serialValue.Exists())
-  {
-    return;
-  }
+// void SerialController::ProcessSerialValue(UndefinedSerialValue serialValue)
+// {
+//   if (!serialValue.Exists())
+//   {
+//     return;
+//   }
 
-  char readValueKey = serialValue.GetReadValueKey();
-  std::list<String> serialValues = serialValue.GetPrintStrings();
-  if (UndefinedSerialTask().SerialValueValid(readValueKey, serialValues))
-  {
-    ProcessSerialValueTask(
-      UndefinedSerialTask(serialValues)
-    );
-    return;
-  }
-}
+//   char readValueKey = serialValue.GetReadValueKey();
+//   std::list<String> serialValues = serialValue.GetPrintStrings();
+//   if (UndefinedSerialTask().SerialValueValid(readValueKey, serialValues))
+//   {
+//     ProcessSerialValueTask(
+//       UndefinedSerialTask(serialValues)
+//     );
+//     return;
+//   }
+// }
 
-void SerialController::ProcessSerialValueTask(UndefinedSerialTask serialTask)
-{
-  if (!MyTaskController->EspTaskProcessed(serialTask.GetTaskID()))
-  {
-    if (serialTask.GetTaskType() == StmTask::SayHiToStm)
-    {
-      MyTaskController->AddTask(
-        new SayHiToEspTask(
-          MyTaskController->GetNewTaskID(),
-          serialTask.GetTaskID(),
-          millis(),
-          MySerialPrinter
-        )
-      );
-      MyTaskController->AddProcessedEspTaskID(serialTask.GetTaskID());
-    }
-  }
-}
+// void SerialController::ProcessSerialValueTask(UndefinedSerialTask serialTask)
+// {
+//   if (!MyTaskController->EspTaskProcessed(serialTask.GetTaskID()))
+//   {
+//     if (serialTask.GetTaskType() == StmTask::SayHiToStm)
+//     {
+//       MyTaskController->AddTask(
+//         new SayHiToEspTask(
+//           MyTaskController->GetNewTaskID(),
+//           serialTask.GetTaskID(),
+//           millis(),
+//           MySerialPrinter
+//         )
+//       );
+//       MyTaskController->AddProcessedEspTaskID(serialTask.GetTaskID());
+//     }
+//   }
+// }

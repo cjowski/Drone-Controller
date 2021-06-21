@@ -3,7 +3,6 @@
 
   #include "Fm/Timer/FmTimerController.h"
   #include "Fm/FmChannels/FmChannelsContainer.h"
-  #include "Fm/FmChannels/FmChannelsSerialValue.h"
 
   class FmController
   {
@@ -11,7 +10,7 @@
     FmController(const BoardTimer *boardTimer);
     FmChannel::SignalState GetFmSignalState();
     int32_t GetFmChannelValue(int channelNo);
-    FmChannelsSerialValue *GetSerialValue();
+    SerialEncoderInput *GetSerialEncoderInput();
     void Loop();
 
     private:

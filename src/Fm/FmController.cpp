@@ -33,9 +33,9 @@ int32_t FmController::GetFmChannelValue(int channelNo)
   return MyFmChannelsContainer->GetFmChannelValue(channelNo);
 }
 
-FmChannelsSerialValue* FmController::GetSerialValue()
+SerialEncoderInput* FmController::GetSerialEncoderInput()
 {
-  return MyFmChannelsContainer->GetSerialValue();
+  return MyFmChannelsContainer->GetSerialEncoderInput();
 }
 
 void FmController::Loop()

@@ -4,8 +4,11 @@
 // #include "Board/NucleoL476rg/NucleoL476rgSetup.h"
 // BoardSetup *boardSetup = new NucleoL476rgSetup();
 
-#include "Board/BluePill/BluePillSetup.h"
-BoardSetup *boardSetup = new BluePillSetup();
+// #include "Board/BluePill/BluePillSetup.h"
+// BoardSetup *boardSetup = new BluePillSetup();
+
+#include "Board/BlackPill/BlackPillSetup.h"
+BoardSetup *boardSetup = new BlackPillSetup();
 
 DroneController *droneController;
 uint32_t previousPrintTime = 0;

@@ -3,13 +3,12 @@
 
   #include "Gyro.h"
   #include "GyroAngles.h"
-  #include "GyroSerialValue.h"
 
   class GyroController
   {
     public:
     GyroController();
-    GyroSerialValue *GetSerialValue();
+    SerialEncoderInput *GetSerialEncoderInput();
     void Loop();
 
     private:

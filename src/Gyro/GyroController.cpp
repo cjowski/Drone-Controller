@@ -10,9 +10,9 @@ GyroController::GyroController()
   MyGyro->Setup();
 }
 
-GyroSerialValue* GyroController::GetSerialValue()
+SerialEncoderInput* GyroController::GetSerialEncoderInput()
 {
-  return MyGyroAngles->GetSerialValue();
+  return MyGyroAngles->GetSerialEncoderInput();
 }
 
 void GyroController::Loop()

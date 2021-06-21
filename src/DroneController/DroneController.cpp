@@ -22,14 +22,14 @@ DroneController::DroneController(
   MyTaskController = new TaskController();
   MySerialController = new SerialController(
     boardSetup->ESP_COMMUNICATION_SERIAL(),
-    [&] () -> SerialValue* {
-      return MyFmController->GetSerialValue();
+    [&] () -> SerialEncoderInput* {
+      return MyFmController->GetSerialEncoderInput();
     },
-    [&] () -> SerialValue* {
-      return MyGyroController->GetSerialValue();
+    [&] () -> SerialEncoderInput* {
+      return MyGyroController->GetSerialEncoderInput();
     },
-    [&] () -> SerialValue* {
-      return MyMotorController->GetSerialValue();
+    [&] () -> SerialEncoderInput* {
+      return MyMotorController->GetSerialEncoderInput();
     },
     MyTaskController
   );

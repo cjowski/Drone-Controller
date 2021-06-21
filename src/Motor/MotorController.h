@@ -2,7 +2,7 @@
 #define MOTOR_CONTROLLER_H
 
   #include "Motor.h"
-  #include "MotorsSerialValue.h"
+  #include <Serial/Type/StringList/Encoder/StringListEncoderInput.h>
 
   class MotorController
   {
@@ -10,13 +10,14 @@
     static const int MOTORS_COUNT = 4;
     Motor *Motors[MOTORS_COUNT];
     MotorTimerController *TimerController;
+    char SERIAL_KEY = 'M';
 
     public:
     MotorController(
       MotorMode *motorMode,
       const BoardTimer *motorBoardTimer
     );
-    MotorsSerialValue *GetSerialValue();
+    SerialEncoderInput *GetSerialEncoderInput();
     void Loop();
   };
 

@@ -5,6 +5,7 @@
   #include "Serial/BlackPillSerial1.h"
   #include "Timer/BlackPillTimer1.h"
   #include "Timer/BlackPillTimer2.h"
+  #include "Timer/BlackPillTimer3.h"
 
   class BlackPillSetup : public BoardSetup
   {
@@ -16,7 +17,7 @@
       return new BlackPillTimer2();
     };
     const BoardTimer *MOTOR_BOARD_TIMER() const {
-      return new BlackPillTimer1();
+      return new BlackPillTimer3();
     };
   };
 

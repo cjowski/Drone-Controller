@@ -1,73 +1,70 @@
-// #include "UndefinedSerialTask.h"
+#include "UndefinedSerialTask.h"
 
-// UndefinedSerialTask::UndefinedSerialTask(std::list<String> serialValues)
-// {
-//   auto it = serialValues.begin();
-//   TaskID = (*it).toInt();
-//   it++;
-//   TaskType = (*it).toInt();
-//   it++;
-//   for (auto it2 = it; it2 != serialValues.end(); it2++)
-//   {
-//     OtherSerialValues.push_back(*it2);
-//   }
-// }
+UndefinedSerialTask::UndefinedSerialTask(StringListDecoderOutput *decoderOutput)
+{
+  std::list<String> texts = decoderOutput->GetTexts();
+  auto it = texts.begin();
+  TaskID = (*it).toInt();
+  it++;
+  TaskType = (*it).toInt();
 
-// bool UndefinedSerialTask::IsInteger(String text) {
-//   for(char i = 0; i < text.length(); i++) {
-//     char currentChar = text.charAt(i);
-//     if (!isdigit(currentChar) && currentChar != '-') {
-//       return false;
-//     }
-//   }
-//   return true;
-// }
+  if (it != texts.end())
+  {
+    it++;
+    for (auto it2 = it; it2 != texts.end(); it2++)
+    {
+      OtherSerialValues.push_back(*it2);
+    }
+  }
+}
 
-// bool UndefinedSerialTask::SerialValuesMatched(std::list<String> serialValues)
-// {
-//   if (serialValues.size() < MIN_SERIAL_VALUE_COUNT)
-//   {
-//     return false;
-//   }
+bool UndefinedSerialTask::IsInteger(String text) {
+  for(char i = 0; i < text.length(); i++) {
+    char currentChar = text.charAt(i);
+    if (!isdigit(currentChar) && currentChar != '-') {
+      return false;
+    }
+  }
+  return true;
+}
 
-//   auto it = serialValues.begin();
-//   if (!IsInteger(*it) && (*it).toInt() > 0)
-//   {
-//     return false;
-//   }
+bool UndefinedSerialTask::SerialDecoderOutputMatched(SerialDecoderOutput *decoderOutput)
+{
+  StringListDecoderOutput *stringListDecoderOutput = (StringListDecoderOutput*)decoderOutput;
 
-//   it++;
-//   if (!IsInteger(*it) && (*it).toInt() > 0)
-//   {
-//     return false;
-//   }
+  if (stringListDecoderOutput->GetKey() != StmTask::SERIAL_KEY
+    || stringListDecoderOutput->GetTexts().size() < MIN_SERIAL_VALUE_COUNT
+  )
+  {
+    return false;
+  }
 
-//   return true;
-// }
+  auto it = stringListDecoderOutput->GetTexts().begin();
+  if (!IsInteger(*it) && (*it).toInt() > 0)
+  {
+    return false;
+  }
 
-// int UndefinedSerialTask::GetTaskID()
-// {
-//   return TaskID;
-// }
+  it++;
+  if (!IsInteger(*it) && (*it).toInt() > 0)
+  {
+    return false;
+  }
 
-// int UndefinedSerialTask::GetTaskType()
-// {
-//   return TaskType;
-// }
+  return true;
+}
 
-// std::list<String> UndefinedSerialTask::GetOtherSerialValues()
-// {
-//   return OtherSerialValues;
-// }
+int UndefinedSerialTask::GetTaskID()
+{
+  return TaskID;
+}
 
-// std::list<String> UndefinedSerialTask::GetPrintStrings()
-// {
-//   std::list<String> printStrings;
-//   printStrings.push_back(String(TaskID));
-//   printStrings.push_back(String(TaskType));
-//   for (auto it = OtherSerialValues.begin(); it != OtherSerialValues.end(); it++)
-//   {
-//     printStrings.push_back(*it);
-//   }
-//   return printStrings;
-// }
+int UndefinedSerialTask::GetTaskType()
+{
+  return TaskType;
+}
+
+std::list<String> UndefinedSerialTask::GetOtherSerialValues()
+{
+  return OtherSerialValues;
+}

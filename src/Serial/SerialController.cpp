@@ -46,7 +46,7 @@ SerialController::SerialController(
   );
 
   Reader = new SerialReader(
-    new StringListDecoder(false),
+    new StringListDecoder(true),
     stmEspSerial,
     SERIAL_BAUD_RATE
   );
@@ -60,44 +60,43 @@ void SerialController::Loop()
   {
     (*it)->Loop();
   }
-  // ProcessSerialValue(
-  //   Reader->Read()
-  // );
+
+  SerialDecoderOutput *decoderOutput = Reader->Read();
+  ProcessDecoderOutput(decoderOutput);
+  delete decoderOutput;
 }
 
-// void SerialController::ProcessSerialValue(UndefinedSerialValue serialValue)
-// {
-//   if (!serialValue.Exists())
-//   {
-//     return;
-//   }
+void SerialController::ProcessDecoderOutput(SerialDecoderOutput *decoderOutput)
+{
+  if (!decoderOutput->Exists)
+  {
+    return;
+  }
+  if (UndefinedSerialTask::SerialDecoderOutputMatched(decoderOutput))
+  {
+    ProcessUndefinedSerialTask(
+      UndefinedSerialTask(decoderOutput)
+    );
+    return;
+  }
+}
 
-//   char readValueKey = serialValue.GetReadValueKey();
-//   std::list<String> serialValues = serialValue.GetPrintStrings();
-//   if (UndefinedSerialTask().SerialValueValid(readValueKey, serialValues))
-//   {
-//     ProcessSerialValueTask(
-//       UndefinedSerialTask(serialValues)
-//     );
-//     return;
-//   }
-// }
-
-// void SerialController::ProcessSerialValueTask(UndefinedSerialTask serialTask)
-// {
-//   if (!MyTaskController->EspTaskProcessed(serialTask.GetTaskID()))
-//   {
-//     if (serialTask.GetTaskType() == StmTask::SayHiToStm)
-//     {
-//       MyTaskController->AddTask(
-//         new SayHiToEspTask(
-//           MyTaskController->GetNewTaskID(),
-//           serialTask.GetTaskID(),
-//           millis(),
-//           MySerialPrinter
-//         )
-//       );
-//       MyTaskController->AddProcessedEspTaskID(serialTask.GetTaskID());
-//     }
-//   }
-// }
+void SerialController::ProcessUndefinedSerialTask(UndefinedSerialTask undefinedSerialTask)
+{
+  if (!MyTaskController->EspTaskProcessed(undefinedSerialTask.GetTaskID()))
+  {
+    if (undefinedSerialTask.GetTaskType() == StmTask::SayHiToStm)
+    {
+      MyTaskController->AddTask(
+        new SayHiToEspTask(
+          MyTaskController->GetNewTaskID(),
+          undefinedSerialTask.GetTaskID(),
+          millis(),
+          Printer,
+          true
+        )
+      );
+      MyTaskController->AddProcessedEspTaskID(undefinedSerialTask.GetTaskID());
+    }
+  }
+}

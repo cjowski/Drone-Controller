@@ -14,10 +14,10 @@ DroneController *droneController;
 uint32_t previousPrintTime = 0;
 
 void setup() {
-  Serial.begin(19200);
   delay(250);
   droneController = new DroneController(boardSetup);
   delay(250);
+  Serial.begin(19200);
 }
 
 void loop() {
@@ -25,7 +25,6 @@ void loop() {
   // uint32_t currentTime = millis();
   // if (currentTime - previousPrintTime > 1000)
   // {
-  //   Serial.begin(19200);
   //   Serial.println(int(currentTime));
   //   previousPrintTime = currentTime;
   // }

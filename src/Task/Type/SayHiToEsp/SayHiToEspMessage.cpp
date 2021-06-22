@@ -22,8 +22,8 @@ SerialEncoderInput *SayHiToEspMessage::GetSerialEncoderInput()
 
 String SayHiToEspMessage::ToString()
 {
-  return "TaskID: " + String(TaskID)
-    + "Task type: " + String(StmTask::SayHiToEsp)
-    + "ESP taskID: " + String(EspTaskID)
-    + "Greeting: " + Greeting;
+  return "STM32 taskID: " + String(TaskID)
+    + ", ESP taskID: " + String(EspTaskID)
+    + ", Type: " + String(StmTask::SayHiToEsp)
+    + ", Greeting: " + Greeting;
 }

@@ -20,8 +20,8 @@
     SerialReader *Reader;
     TaskController *MyTaskController;
 
-    // void ProcessSerialValue(UndefinedSerialValue serialValue);
-    // void ProcessSerialValueTask(UndefinedSerialTask serialTask);
+    void ProcessDecoderOutput(SerialDecoderOutput *decoderOutput);
+    void ProcessUndefinedSerialTask(UndefinedSerialTask undefinedSerialTask);
 
     public:
     SerialController(

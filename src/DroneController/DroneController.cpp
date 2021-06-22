@@ -19,9 +19,28 @@ DroneController::DroneController(
     ),
     boardSetup->MOTOR_BOARD_TIMER()
   );
-  MyTaskController = new TaskController();
+
+  HardwareSerial* communicationSerial = new HardwareSerial(
+    boardSetup->ESP_COMMUNICATION_SERIAL()->RX_PIN(),
+    boardSetup->ESP_COMMUNICATION_SERIAL()->TX_PIN()
+  );
+
+  SerialPrinter *printer = new SerialPrinter(
+    new StringListEncoder(false),
+    communicationSerial,
+    SERIAL_BAUD_RATE
+  );
+
+  SerialReader *reader = new SerialReader(
+    new StringListDecoder(true),
+    communicationSerial,
+    SERIAL_BAUD_RATE
+  );
+
+  MyTaskController = new TaskController(printer, true);
   MySerialController = new SerialController(
-    boardSetup->ESP_COMMUNICATION_SERIAL(),
+    printer,
+    reader,
     [&] () -> SerialEncoderInput* {
       return MyFmController->GetSerialEncoderInput();
     },

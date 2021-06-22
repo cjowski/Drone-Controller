@@ -1,17 +1,18 @@
 #ifndef UNDEFINED_SERIAL_TASK_H
 #define UNDEFINED_SERIAL_TASK_H
 
-  #include "Task/StmTask.h"
   #include <Serial/Type/StringList/Decoder/StringListDecoderOutput.h>
+  #include "Task/StmTask.h"
 
   class UndefinedSerialTask
   {
     private:
+    static const unsigned int MIN_SERIAL_TEXTS_COUNT = 2;
+
     int TaskID;
     int TaskType;
-    std::list<String> OtherSerialValues;
+    std::list<String> OtherSerialTexts;
     static bool IsInteger(String text);
-    static const unsigned int MIN_SERIAL_VALUE_COUNT = 2;
 
     public:
     UndefinedSerialTask(SerialDecoderOutput *decoderOutput) : UndefinedSerialTask((StringListDecoderOutput*) decoderOutput) { };
@@ -19,8 +20,6 @@
     static bool SerialDecoderOutputMatched(SerialDecoderOutput *decoderOutput);
     int GetTaskID();
     int GetTaskType();
-    std::list<String> GetOtherSerialValues();
-    std::list<String> GetPrintStrings();
   };
 
 #endif

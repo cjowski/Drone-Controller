@@ -13,7 +13,7 @@ UndefinedSerialTask::UndefinedSerialTask(StringListDecoderOutput *decoderOutput)
     it++;
     for (auto it2 = it; it2 != texts.end(); it2++)
     {
-      OtherSerialValues.push_back(*it2);
+      OtherSerialTexts.push_back(*it2);
     }
   }
 }
@@ -33,7 +33,7 @@ bool UndefinedSerialTask::SerialDecoderOutputMatched(SerialDecoderOutput *decode
   StringListDecoderOutput *stringListDecoderOutput = (StringListDecoderOutput*)decoderOutput;
 
   if (stringListDecoderOutput->GetKey() != StmTask::SERIAL_KEY
-    || stringListDecoderOutput->GetTexts().size() < MIN_SERIAL_VALUE_COUNT
+    || stringListDecoderOutput->GetTexts().size() < MIN_SERIAL_TEXTS_COUNT
   )
   {
     return false;
@@ -62,9 +62,4 @@ int UndefinedSerialTask::GetTaskID()
 int UndefinedSerialTask::GetTaskType()
 {
   return TaskType;
-}
-
-std::list<String> UndefinedSerialTask::GetOtherSerialValues()
-{
-  return OtherSerialValues;
 }

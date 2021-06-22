@@ -1,22 +1,16 @@
 #include "SerialController.h"
 
 SerialController::SerialController(
-  const BoardSerial *espCommunicationSerial,
+  SerialPrinter *printer,
+  SerialReader *reader,
   std::function<SerialEncoderInput*(void)> getFmSerialEncoderInput,
   std::function<SerialEncoderInput*(void)> getGyroSerialEncoderInput,
   std::function<SerialEncoderInput*(void)> getMotorsSerialEncoderInput,
   TaskController *myTaskController
 )
 {
-  HardwareSerial* stmEspSerial = new HardwareSerial(
-    espCommunicationSerial->RX_PIN(),
-    espCommunicationSerial->TX_PIN()
-  );
-  Printer = new SerialPrinter(
-    new StringListEncoder(false),
-    stmEspSerial,
-    SERIAL_BAUD_RATE
-  );
+  Printer = printer;
+  Reader = reader;
 
   PeriodicalPrinters.push_back(
     new SerialPeriodicalPrinter(
@@ -44,12 +38,6 @@ SerialController::SerialController(
       false
     )
   );
-
-  Reader = new SerialReader(
-    new StringListDecoder(true),
-    stmEspSerial,
-    SERIAL_BAUD_RATE
-  );
   
   MyTaskController = myTaskController;
 }
@@ -74,29 +62,9 @@ void SerialController::ProcessDecoderOutput(SerialDecoderOutput *decoderOutput)
   }
   if (UndefinedSerialTask::SerialDecoderOutputMatched(decoderOutput))
   {
-    ProcessUndefinedSerialTask(
+    MyTaskController->ProcessUndefinedSerialTask(
       UndefinedSerialTask(decoderOutput)
     );
     return;
-  }
-}
-
-void SerialController::ProcessUndefinedSerialTask(UndefinedSerialTask undefinedSerialTask)
-{
-  if (!MyTaskController->EspTaskProcessed(undefinedSerialTask.GetTaskID()))
-  {
-    if (undefinedSerialTask.GetTaskType() == StmTask::SayHiToStm)
-    {
-      MyTaskController->AddTask(
-        new SayHiToEspTask(
-          MyTaskController->GetNewTaskID(),
-          undefinedSerialTask.GetTaskID(),
-          millis(),
-          Printer,
-          true
-        )
-      );
-      MyTaskController->AddProcessedEspTaskID(undefinedSerialTask.GetTaskID());
-    }
   }
 }

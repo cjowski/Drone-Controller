@@ -1,6 +1,10 @@
 #include "TaskController.h"
 
-TaskController::TaskController() { }
+TaskController::TaskController(SerialPrinter *printer, bool debugMode)
+{
+  Printer = printer;
+  DebugMode = debugMode;
+}
 
 int TaskController::GetNewTaskID()
 {
@@ -24,6 +28,26 @@ bool TaskController::EspTaskProcessed(int espTaskID)
     ProcessedEspTaskIDs.end(),
     espTaskID
   ) != ProcessedEspTaskIDs.end();
+}
+
+void TaskController::ProcessUndefinedSerialTask(UndefinedSerialTask undefinedSerialTask)
+{
+  if (!EspTaskProcessed(undefinedSerialTask.GetTaskID()))
+  {
+    if (undefinedSerialTask.GetTaskType() == StmTask::SayHiToStm)
+    {
+      AddTask(
+        new SayHiToEspTask(
+          GetNewTaskID(),
+          undefinedSerialTask.GetTaskID(),
+          millis(),
+          Printer,
+          true
+        )
+      );
+      AddProcessedEspTaskID(undefinedSerialTask.GetTaskID());
+    }
+  }
 }
 
 void TaskController::Loop()

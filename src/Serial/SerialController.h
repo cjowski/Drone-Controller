@@ -7,25 +7,23 @@
   #include "Serial/Type/StringList/Encoder/StringListEncoder.h"
   #include "Serial/Type/StringList/Decoder/StringListDecoder.h"
   #include "Task/TaskController/TaskController.h"
-  #include "Task/UndefinedSerialTask.h"
-  #include "Task/Type/SayHiToEsp/SayHiToEspTask.h"
 
   #define SERIAL_BAUD_RATE 19200
 
   class SerialController
   {
     private:
-    std::list<SerialPeriodicalPrinter*> PeriodicalPrinters;
     SerialPrinter *Printer;
     SerialReader *Reader;
+    std::list<SerialPeriodicalPrinter*> PeriodicalPrinters;
     TaskController *MyTaskController;
 
     void ProcessDecoderOutput(SerialDecoderOutput *decoderOutput);
-    void ProcessUndefinedSerialTask(UndefinedSerialTask undefinedSerialTask);
 
     public:
     SerialController(
-      const BoardSerial *espCommunicationSerial,
+      SerialPrinter *printer,
+      SerialReader *reader,
       std::function<SerialEncoderInput*(void)> getFmSerialEncoderInput,
       std::function<SerialEncoderInput*(void)> getGyroSerialEncoderInput,
       std::function<SerialEncoderInput*(void)> getMotorsSerialEncoderInput,

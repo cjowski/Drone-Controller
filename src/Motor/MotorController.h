@@ -18,6 +18,7 @@
       const BoardTimer *motorBoardTimer
     );
     SerialEncoderInput *GetSerialEncoderInput();
+    void Setup();
     void Loop();
   };
 

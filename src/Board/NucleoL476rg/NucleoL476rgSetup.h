@@ -11,15 +11,14 @@
   class NucleoL476rgSetup : public BoardSetup
   {
     public:
-    const BoardSerial *ESP_COMMUNICATION_SERIAL() const {
-      return new NucleoL476rgSerial3();
-    };
-    const BoardTimer *FM_BOARD_TIMER() const {
-      return new NucleoL476rgTimer2();
-    };
-    const BoardTimer *MOTOR_BOARD_TIMER() const {
-      return new NucleoL476rgTimer1();
-    };
+    NucleoL476rgSetup()
+    {
+      EspCommunicationSerial = new NucleoL476rgSerial3();
+      FmBoardTimerSetup = new BoardTimerSetup(
+        new NucleoL476rgTimer2()
+      );
+      MotorBoardTimer = new NucleoL476rgTimer1();
+    }
   };
 
 #endif

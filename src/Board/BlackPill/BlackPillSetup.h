@@ -6,19 +6,32 @@
   #include "Timer/BlackPillTimer1.h"
   #include "Timer/BlackPillTimer2.h"
   #include "Timer/BlackPillTimer3.h"
+  #include "Timer/BlackPillTimer4.h"
 
   class BlackPillSetup : public BoardSetup
   {
     public:
-    const BoardSerial *ESP_COMMUNICATION_SERIAL() const {
-      return new BlackPillSerial1();
-    };
-    const BoardTimer *FM_BOARD_TIMER() const {
-      return new BlackPillTimer2();
-    };
-    const BoardTimer *MOTOR_BOARD_TIMER() const {
-      return new BlackPillTimer3();
-    };
+    BlackPillSetup()
+    {
+      EspCommunicationSerial = new BlackPillSerial1();
+
+      auto timer2 = new BlackPillTimer2();
+      auto timer4 = new BlackPillTimer4();
+
+      std::list<BoardTimerChannelSetup*> fmChannels;
+      fmChannels.push_back(new BoardTimerChannelSetup(1, timer2));
+      fmChannels.push_back(new BoardTimerChannelSetup(2, timer2));
+      fmChannels.push_back(new BoardTimerChannelSetup(3, timer4));
+      fmChannels.push_back(new BoardTimerChannelSetup(4, timer4));
+
+      FmBoardTimerSetup = new BoardTimerSetup(
+        fmChannels
+      );
+      MotorBoardTimer = new BlackPillTimer3();
+      // MotorBoardTimerSetup = new BoardTimerSetup(
+      //   new BlackPillTimer3()
+      // );
+    }
   };
 
 #endif

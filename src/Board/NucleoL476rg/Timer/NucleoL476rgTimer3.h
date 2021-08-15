@@ -1,7 +1,7 @@
 #ifndef NUCLEO_L476RG_TIMER_3_H
 #define NUCLEO_L476RG_TIMER_3_H
 
-  #include "Board/BoardTimer.h"
+  #include "Board/BoardTimer/BoardTimer.h"
 
   class NucleoL476rgTimer3 : public BoardTimer
   {
@@ -24,6 +24,9 @@
     };
     TIM_TypeDef *TIMER_BASE() const {
       return (TIM_TypeDef *) TIM3;
+    };
+    const uint8_t TIMER_NO() const {
+      return 3;
     };
   };
 

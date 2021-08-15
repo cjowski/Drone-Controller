@@ -7,12 +7,16 @@ GyroController::GyroController()
     MyGyro->GetAngleMultiplayer(),
     MyGyro->GetUpdatePeriod()
   );
-  MyGyro->Setup();
 }
 
 SerialEncoderInput* GyroController::GetSerialEncoderInput()
 {
   return MyGyroAngles->GetSerialEncoderInput();
+}
+
+void GyroController::Setup()
+{
+  MyGyro->Setup();
 }
 
 void GyroController::Loop()

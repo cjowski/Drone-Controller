@@ -2,14 +2,16 @@
 #define BOARD_SETUP_H
 
   #include "BoardSerial.h"
-  #include "BoardTimer.h"
+  #include "BoardTimer/BoardTimerSetup.h"
 
+  //todo convert to abstract class
   class BoardSetup
   {
     public:
-    virtual const BoardSerial *ESP_COMMUNICATION_SERIAL() const = 0;
-    virtual const BoardTimer *FM_BOARD_TIMER() const = 0;
-    virtual const BoardTimer *MOTOR_BOARD_TIMER() const = 0;
+    const BoardSerial *EspCommunicationSerial;
+    const BoardTimerSetup *FmBoardTimerSetup;
+    const BoardTimer *MotorBoardTimer;
+    // const BoardTimerSetup *MotorBoardTimerSetup;
   };
 
 #endif

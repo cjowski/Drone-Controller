@@ -10,15 +10,14 @@
   class BluePillSetup : public BoardSetup
   {
     public:
-    const BoardSerial *ESP_COMMUNICATION_SERIAL() const {
-      return new BluePillSerial1();
-    };
-    const BoardTimer *FM_BOARD_TIMER() const {
-      return new BluePillTimer2();
-    };
-    const BoardTimer *MOTOR_BOARD_TIMER() const {
-      return new BluePillTimer1();
-    };
+    BluePillSetup()
+    {
+      EspCommunicationSerial = new BluePillSerial1();
+      FmBoardTimerSetup = new BoardTimerSetup(
+        new BluePillTimer2()
+      );
+      MotorBoardTimer = new BluePillTimer1();
+    }
   };
 
 #endif

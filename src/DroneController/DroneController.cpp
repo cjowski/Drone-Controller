@@ -4,7 +4,7 @@ DroneController::DroneController(
   BoardSetup *boardSetup
 )
 {
-  MyFmController = new FmController(boardSetup->FM_BOARD_TIMER());
+  MyFmController = new FmController(boardSetup->FmBoardTimerSetup);
   MyGyroController = new GyroController();
   MyMotorController = new MotorController(
     new MotorModeChannelMap(
@@ -17,12 +17,12 @@ DroneController::DroneController(
         return MyFmController->GetFmChannelValue(2);
       }
     ),
-    boardSetup->MOTOR_BOARD_TIMER()
+    boardSetup->MotorBoardTimer
   );
 
   HardwareSerial* communicationSerial = new HardwareSerial(
-    boardSetup->ESP_COMMUNICATION_SERIAL()->RX_PIN(),
-    boardSetup->ESP_COMMUNICATION_SERIAL()->TX_PIN()
+    boardSetup->EspCommunicationSerial->RX_PIN(),
+    boardSetup->EspCommunicationSerial->TX_PIN()
   );
 
   SerialPrinter *printer = new SerialPrinter(
@@ -52,6 +52,13 @@ DroneController::DroneController(
     },
     MyTaskController
   );
+}
+
+void DroneController::Setup()
+{
+  MyFmController->Setup();
+  MyGyroController->Setup();
+  MyMotorController->Setup();
 }
 
 void DroneController::Loop()

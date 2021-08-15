@@ -17,7 +17,7 @@
     FmChannelsContainer(FmChannel *channels, int channelsCount);
     void UpdateChannelsValues();
     FmChannel::SignalState GetFmSignalState();
-    int32_t GetFmChannelValue(int channelNo);
+    int32_t GetFmChannelValue(int channelIndex);
     SerialEncoderInput *GetSerialEncoderInput();
   };
 

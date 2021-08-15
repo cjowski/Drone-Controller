@@ -1,25 +1,30 @@
 #ifndef FM_TIMER_CONTROLLER_H
 #define FM_TIMER_CONTROLLER_H
 
-  #include <list>
+  #include <map>
   #include "FmTimerChannel.h"
-  #include "Board/BoardTimer.h"
   
   class FmTimerController
   {
     private:
-    HardwareTimer *Timer;
-    const BoardTimer *FmBoardTimer;
+    const BoardTimerSetup *FmBoardTimerSetup;
     std::list<FmTimerChannel*> Channels;
     const int MAX_CHANNELS_COUNT = 4;
 
     public:
-    FmTimerController(const BoardTimer *boardTimer);
+    FmTimerController(const BoardTimerSetup *fmBoardTimerSetup);
     void Setup();
-    void SetupChannel(int channelNo);
     void Resume();
     void Refresh();
-    int32_t GetChannelValue(int channelNo);
+    int32_t GetChannelValue(int channelIndex);
+
+    private:
+    void SetupTimer(TIM_TypeDef* timerBase);
+    void SetupChannel(
+      BoardTimerChannelSetup *channelSetup,
+      HardwareTimer *timer
+    );
+    std::list<HardwareTimer*> GetTimers();
   };
 
 #endif

@@ -19,6 +19,7 @@
 
     public:
     DroneController(BoardSetup *boardSetup);
+    void Setup();
     void Loop();
   };
 

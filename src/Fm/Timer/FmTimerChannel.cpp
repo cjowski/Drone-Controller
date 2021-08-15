@@ -2,11 +2,13 @@
 
 FmTimerChannel::FmTimerChannel(
   int channelNo,
+  int timerNo,
   int channelPin,
   HardwareTimer *timer
 )
 {
   ChannelNo = channelNo;
+  TimerNo = timerNo;
   ChannelPin = channelPin;
   Timer = timer;
 }
@@ -37,9 +39,7 @@ void FmTimerChannel::InterruptHandler(
 }
 
 void FmTimerChannel::Setup(
-  volatile uint32_t *captureCompareReg,
-  volatile uint32_t *captureCompareEnableReg,
-  unsigned long captureCompareOutPolarity
+  BoardTimerChannelSetup *channelSetup
 )
 {
   pinMode(ChannelPin, INPUT);
@@ -57,17 +57,63 @@ void FmTimerChannel::Setup(
         ChannelPin,
         &(OutputValue),
         &(StartValue),
-        captureCompareReg,
-        captureCompareEnableReg,
-        captureCompareOutPolarity
+        GetCaptureCompareRegister(channelSetup->GetTimerBase()),
+        &(channelSetup->GetTimerBase())->CCER,
+        GetCaptureCompareOutPolarity()
       );
     }
   );
 }
 
+volatile uint32_t* FmTimerChannel::GetCaptureCompareRegister(
+  TIM_TypeDef *timerBase
+)
+{
+  switch (ChannelNo)
+  {
+    case 1:
+      return &(timerBase)->CCR1;
+    case 2:
+      return &(timerBase)->CCR2;
+    case 3:
+      return &(timerBase)->CCR3;
+    case 4:
+      return &(timerBase)->CCR4;
+    default:
+      return &(timerBase)->CCR1; //more channels not supported
+  }
+}
+
+unsigned long FmTimerChannel::GetCaptureCompareOutPolarity()
+{
+  switch (ChannelNo)
+  {
+    case 1:
+      return TIM_CCER_CC1P;
+    case 2:
+      return TIM_CCER_CC2P;
+    case 3:
+      return TIM_CCER_CC3P;
+    case 4:
+      return TIM_CCER_CC4P;
+    default:
+      return -1; //more channels not supported
+  }
+}
+
 int FmTimerChannel::GetChannelNo()
 {
   return ChannelNo;
+}
+
+int FmTimerChannel::GetTimerNo()
+{
+  return TimerNo;
+}
+
+HardwareTimer *FmTimerChannel::GetTimer()
+{
+  return Timer;
 }
 
 int32_t FmTimerChannel::GetOutputValue()

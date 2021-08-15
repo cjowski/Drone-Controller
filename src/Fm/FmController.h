@@ -7,14 +7,14 @@
   class FmController
   {
     public:
-    FmController(const BoardTimer *boardTimer);
+    FmController(const BoardTimerSetup *fmBoardTimerSetup);
     FmChannel::SignalState GetFmSignalState();
-    int32_t GetFmChannelValue(int channelNo);
+    int32_t GetFmChannelValue(int channelIndex);
     SerialEncoderInput *GetSerialEncoderInput();
+    void Setup();
     void Loop();
 
     private:
-    const int FM_CHANNELS_COUNT = 4;
     FmTimerController *MyFmTimerController;
     FmChannelsContainer *MyFmChannelsContainer;
   };

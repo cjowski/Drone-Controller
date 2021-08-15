@@ -3,7 +3,7 @@
 
   #include <list>
   #include <PinConfigured.h>
-  #include "Board/BoardTimer.h"
+  #include "Board/BoardTimer/BoardTimer.h"
   
   class MotorTimerController
   {

@@ -32,13 +32,13 @@ FmChannel::SignalState FmChannelsContainer::GetFmSignalState()
   return FmChannel::SignalState::restoring;
 }
 
-int32_t FmChannelsContainer::GetFmChannelValue(int channelNo)
+int32_t FmChannelsContainer::GetFmChannelValue(int channelIndex)
 {
-  if (channelNo < 0 || channelNo >= ChannelsCount)
+  if (channelIndex < 0 || channelIndex >= ChannelsCount)
   {
     return -1;
   }
-  return Channels[channelNo].GetValue();
+  return Channels[channelIndex].GetValue();
 }
 
 SerialEncoderInput* FmChannelsContainer::GetSerialEncoderInput()

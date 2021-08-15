@@ -1,17 +1,17 @@
-#ifndef BLACK_PILL_TIMER_3_H
-#define BLACK_PILL_TIMER_3_H
+#ifndef BLACK_PILL_TIMER_4_H
+#define BLACK_PILL_TIMER_4_H
 
   #include "Board/BoardTimer/BoardTimer.h"
 
-  class BlackPillTimer3 : public BoardTimer
+  class BlackPillTimer4 : public BoardTimer
   {
     private:
     static const int TIMER_CHANNELS_COUNT = 4;
     const uint8_t ChannelPins[TIMER_CHANNELS_COUNT] = {
-      PA6,
-      PA7,
-      PB0,
-      PB1
+      PB6,
+      PB7,
+      PB8,
+      PB9
     };
 
     public:
@@ -23,10 +23,10 @@
       return TIMER_CHANNELS_COUNT;
     };
     TIM_TypeDef *TIMER_BASE() const {
-      return (TIM_TypeDef *) TIM3;
+      return (TIM_TypeDef *) TIM4;
     };
     const uint8_t TIMER_NO() const {
-      return 3;
+      return 4;
     };
   };
 

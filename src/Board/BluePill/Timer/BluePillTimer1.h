@@ -1,7 +1,7 @@
 #ifndef BLUE_PILL_TIMER_1_H
 #define BLUE_PILL_TIMER_1_H
 
-  #include "Board/BoardTimer.h"
+  #include "Board/BoardTimer/BoardTimer.h"
 
   class BluePillTimer1 : public BoardTimer
   {
@@ -24,6 +24,9 @@
     };
     TIM_TypeDef *TIMER_BASE() const {
       return (TIM_TypeDef *) TIM1;
+    };
+    const uint8_t TIMER_NO() const {
+      return 1;
     };
   };
 

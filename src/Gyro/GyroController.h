@@ -9,6 +9,7 @@
     public:
     GyroController();
     SerialEncoderInput *GetSerialEncoderInput();
+    void Setup();
     void Loop();
 
     private:

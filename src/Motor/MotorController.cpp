@@ -6,10 +6,8 @@ MotorController::MotorController(
 )
 {
   TimerController = new MotorTimerController(motorBoardTimer);
-  TimerController->Setup();
   for (int i = 0; i < MOTORS_COUNT; i++)
   {
-    TimerController->SetupChannel(i + 1);
     Motors[i] = new Motor(
       new MotorTimerChannel(i + 1, TimerController),
       motorMode
@@ -30,6 +28,15 @@ SerialEncoderInput *MotorController::GetSerialEncoderInput()
     SERIAL_KEY,
     texts
   );
+}
+
+void MotorController::Setup()
+{
+  TimerController->Setup();
+  for (int i = 0; i < MOTORS_COUNT; i++)
+  {
+    TimerController->SetupChannel(i + 1);
+  }
 }
 
 void MotorController::Loop()

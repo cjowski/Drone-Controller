@@ -16,6 +16,7 @@ uint32_t previousPrintTime = 0;
 void setup() {
   delay(250);
   droneController = new DroneController(boardSetup);
+  droneController->Setup();
   delay(250);
   Serial.begin(19200);
 }

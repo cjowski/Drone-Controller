@@ -1,26 +1,30 @@
 #include "FmController.h"
 
-FmController::FmController(const BoardTimer *fmBoardTimer)
+FmController::FmController(const BoardTimerSetup *fmBoardTimerSetup)
 {
-  MyFmTimerController = new FmTimerController(fmBoardTimer);
-  MyFmTimerController->Setup();
-  MyFmTimerController->SetupChannel(1);
-  MyFmTimerController->SetupChannel(2);
-  MyFmTimerController->SetupChannel(3);
-  MyFmTimerController->SetupChannel(4);
-  MyFmTimerController->Resume();
+  MyFmTimerController = new FmTimerController(fmBoardTimerSetup);
+  FmChannel *channels = new FmChannel[fmBoardTimerSetup->GetChannelsCount()];
 
-  FmChannel *channels = new FmChannel[FM_CHANNELS_COUNT];
-  for (int i = 0; i < FM_CHANNELS_COUNT; i++) {
+  for (int i = 0; i < fmBoardTimerSetup->GetChannelsCount(); i++) {
     channels[i].AttachUpdateValueCallback(
       [&, i, channels] () {
         channels[i].TrySetNewValue(
-          MyFmTimerController->GetChannelValue(i + 1)
+          MyFmTimerController->GetChannelValue(i)
         );
       }
     );
   }
-  MyFmChannelsContainer = new FmChannelsContainer(channels, FM_CHANNELS_COUNT);
+
+  MyFmChannelsContainer = new FmChannelsContainer(
+    channels,
+    fmBoardTimerSetup->GetChannelsCount()
+  );
+}
+
+void FmController::Setup()
+{
+  MyFmTimerController->Setup();
+  MyFmTimerController->Resume();
 }
 
 FmChannel::SignalState FmController::GetFmSignalState()
@@ -28,9 +32,9 @@ FmChannel::SignalState FmController::GetFmSignalState()
   return MyFmChannelsContainer->GetFmSignalState();
 }
 
-int32_t FmController::GetFmChannelValue(int channelNo)
+int32_t FmController::GetFmChannelValue(int channelIndex)
 {
-  return MyFmChannelsContainer->GetFmChannelValue(channelNo);
+  return MyFmChannelsContainer->GetFmChannelValue(channelIndex);
 }
 
 SerialEncoderInput* FmController::GetSerialEncoderInput()

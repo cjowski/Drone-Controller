@@ -1,72 +1,121 @@
 #include "MotorTimerController.h"
 
-MotorTimerController::MotorTimerController(const BoardTimer *motorBoardTimer)
+MotorTimerController::MotorTimerController(
+  const BoardTimerSetup *motorBoardTimerSetup
+)
 {
-  MotorBoardTimer = motorBoardTimer;
-  Timer = new HardwareTimer(motorBoardTimer->TIMER_BASE());
+  MotorBoardTimerSetup = motorBoardTimerSetup;
 }
 
 void MotorTimerController::Setup()
 {
-  MotorBoardTimer->TIMER_BASE()->CR1 = TIM_CR1_CEN | TIM_CR1_ARPE;
-  MotorBoardTimer->TIMER_BASE()->CR2 = 0;
-  MotorBoardTimer->TIMER_BASE()->SMCR = 0;
-  MotorBoardTimer->TIMER_BASE()->DIER = 0;
-  MotorBoardTimer->TIMER_BASE()->EGR = 0;
-  MotorBoardTimer->TIMER_BASE()->CCMR1 = (0b110 << 4) | TIM_CCMR1_OC1PE |(0b110 << 12) | TIM_CCMR1_OC2PE;
-  MotorBoardTimer->TIMER_BASE()->CCMR2 = (0b110 << 4) | TIM_CCMR2_OC3PE |(0b110 << 12) | TIM_CCMR2_OC4PE;
-  MotorBoardTimer->TIMER_BASE()->CCER = TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC3E | TIM_CCER_CC4E;
-  MotorBoardTimer->TIMER_BASE()->PSC = 71;
-  MotorBoardTimer->TIMER_BASE()->ARR = 5000;
-  MotorBoardTimer->TIMER_BASE()->DCR = 0;
+  std::map<int, HardwareTimer*> initializedTimers;
+  for (int i = 0; i < MotorBoardTimerSetup->GetChannelsCount(); i++)
+  {
+    if (i >= MAX_CHANNELS_COUNT || i >= MotorBoardTimerSetup->GetChannelsCount())
+    {
+      return;
+    }
+
+    auto channelSetup = MotorBoardTimerSetup->GetChannelSetup(i);
+    auto timerNo = channelSetup->GetTimerNo();
+
+    if (initializedTimers.find(timerNo) == initializedTimers.end())
+    {
+      initializedTimers[timerNo] = new HardwareTimer(channelSetup->GetTimerBase());
+      SetupTimer(channelSetup->GetTimerBase());
+    }
+
+    auto timer = initializedTimers.find(timerNo)->second;
+    SetupChannel(channelSetup, timer);
+  }
 }
 
-void MotorTimerController::SetupChannel(int channelNo)
+void MotorTimerController::SetupTimer(TIM_TypeDef* timerBase)
 {
-  if (channelNo > MAX_CHANNELS_COUNT || channelNo > MotorBoardTimer->CHANNELS_COUNT())
-  {
-    return;
-  }
+  timerBase->CR1 = TIM_CR1_CEN | TIM_CR1_ARPE;
+  timerBase->CR2 = 0;
+  timerBase->SMCR = 0;
+  timerBase->DIER = 0;
+  timerBase->EGR = 0;
+  timerBase->CCMR1 = (0b110 << 4) | TIM_CCMR1_OC1PE |(0b110 << 12) | TIM_CCMR1_OC2PE;
+  timerBase->CCMR2 = (0b110 << 4) | TIM_CCMR2_OC3PE |(0b110 << 12) | TIM_CCMR2_OC4PE;
+  timerBase->CCER = TIM_CCER_CC1E | TIM_CCER_CC2E | TIM_CCER_CC3E | TIM_CCER_CC4E;
+  timerBase->PSC = 71;
+  timerBase->ARR = 5000;
+  timerBase->DCR = 0;
+}
 
-  pinMode(MotorBoardTimer->CHANNEL_PINS()[channelNo - 1], OUTPUT);
-  Timer->setMode(
-    channelNo,
+void MotorTimerController::SetupChannel(
+  BoardTimerChannelSetup *channelSetup,
+  HardwareTimer *timer
+)
+{
+  pinMode(channelSetup->GetPin(), OUTPUT);
+  timer->setMode(
+    channelSetup->GetChannelNo(),
     TIMER_OUTPUT_COMPARE_PWM1,
-    MotorBoardTimer->CHANNEL_PINS()[channelNo - 1]
+    channelSetup->GetPin()
   );
-  SetChannelValue(channelNo, MotorTimerController::MIN_PWM_VALUE);
+  auto motorTimerChannel = new MotorTimerChannel(
+    channelSetup->GetChannelNo(),
+    channelSetup->GetTimerNo(),
+    timer,
+    channelSetup->GetTimerBase()
+  );
+  motorTimerChannel->SetValue(MotorTimerController::MIN_PWM_VALUE);
+  Channels.push_back(motorTimerChannel);
 }
 
 void MotorTimerController::Resume()
 {
-  Timer->resume();
+  auto timers = GetTimers();
+  for (auto it = timers.begin(); it != timers.end(); it++)
+  {
+    (*it)->resume();
+  }
 }
 
 void MotorTimerController::Refresh()
 {
-  Timer->refresh();
-}
-
-void MotorTimerController::SetChannelValue(
-  int channelNo,
-  uint32_t value
-)
-{
-  switch (channelNo)
+  auto timers = GetTimers();
+  for (auto it = timers.begin(); it != timers.end(); it++)
   {
-    case 1:
-      MotorBoardTimer->TIMER_BASE()->CCR1 = value;
-      break;
-    case 2:
-      MotorBoardTimer->TIMER_BASE()->CCR2 = value;
-      break;
-    case 3:
-      MotorBoardTimer->TIMER_BASE()->CCR3 = value;
-      break;
-    case 4:
-      MotorBoardTimer->TIMER_BASE()->CCR4 = value;
-      break;
-    default:
-      return;
+    (*it)->refresh();
   }
 }
+
+void MotorTimerController::SetChannelValue(int channelNo, uint32_t value)
+{
+  if (channelNo > MAX_CHANNELS_COUNT)
+  {
+    return;
+  }
+
+  auto channel = GetChannel(channelNo);
+  channel->SetValue(value);
+}
+
+MotorTimerChannel *MotorTimerController::GetChannel(int channelNo)
+{
+  auto it = Channels.begin();
+  std::advance(it, channelNo - 1);
+  return *it;
+}
+
+std::list<HardwareTimer*> MotorTimerController::GetTimers()
+{
+  std::list<HardwareTimer*> timers;
+  std::set<int> addedTimerNumbers;
+
+  for (auto it = Channels.begin(); it != Channels.end(); it++)
+  {
+    if (addedTimerNumbers.find((*it)->GetTimerNo()) == addedTimerNumbers.end()){
+      addedTimerNumbers.insert((*it)->GetTimerNo());
+      timers.push_back((*it)->GetTimer());
+    }
+  }
+
+  return timers;
+}
+

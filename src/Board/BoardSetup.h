@@ -10,8 +10,8 @@
     public:
     const BoardSerial *EspCommunicationSerial;
     const BoardTimerSetup *FmBoardTimerSetup;
-    const BoardTimer *MotorBoardTimer;
-    // const BoardTimerSetup *MotorBoardTimerSetup;
+    // const BoardTimer *MotorBoardTimer;
+    const BoardTimerSetup *MotorBoardTimerSetup;
   };
 
 #endif

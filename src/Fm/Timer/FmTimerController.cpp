@@ -1,6 +1,8 @@
 #include "FmTimerController.h"
 
-FmTimerController::FmTimerController(const BoardTimerSetup *fmBoardTimerSetup)
+FmTimerController::FmTimerController(
+  const BoardTimerSetup *fmBoardTimerSetup
+)
 {
   FmBoardTimerSetup = fmBoardTimerSetup;
 }

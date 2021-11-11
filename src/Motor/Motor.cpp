@@ -1,12 +1,16 @@
 #include "Motor.h"
 
 Motor::Motor(
-  MotorTimerChannel *timerChannel,
-  MotorMode *mode
+  MotorMode *mode,
+  std::function<void(uint32_t)> setChannelValue,
+  uint32_t minSpeed,
+  uint32_t maxSpeed
 )
 {
-  TimerChannel = timerChannel;
   Mode = mode;
+  SetChannelValue = setChannelValue;
+  MinSpeed = minSpeed;
+  MaxSpeed = maxSpeed;
 }
 
 uint32_t Motor::GetSpeed()
@@ -18,14 +22,14 @@ uint32_t Motor::GetSpeed()
     return PreviousSpeed;
   }
 
-  if (speed.Value < MotorTimerController::MIN_PWM_VALUE)
+  if (speed.Value < MinSpeed)
   {
-    return MotorTimerController::MIN_PWM_VALUE;
+    return MinSpeed;
   }
 
-  if (speed.Value > MotorTimerController::MAX_PWM_VALUE)
+  if (speed.Value > MaxSpeed)
   {
-    return MotorTimerController::MAX_PWM_VALUE;
+    return MaxSpeed;
   }
 
   return speed.Value;
@@ -39,6 +43,6 @@ uint32_t Motor::GetPreviousSpeed()
 void Motor::Loop()
 {
   uint32_t currentSpeed = GetSpeed();
-  TimerChannel->SetValue(currentSpeed);
+  SetChannelValue(currentSpeed);
   PreviousSpeed = currentSpeed;
 }

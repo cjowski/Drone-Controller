@@ -1,24 +1,25 @@
 #ifndef MOTOR_H
 #define MOTOR_H
 
-  #include "Timer/MotorTimerChannel.h"
+  #include <functional>
   #include "Mode/MotorMode.h"
-
-  #define PWM_PIN PA6
 
   class Motor
   {
     private:
-    MotorTimerChannel *TimerChannel;
     MotorMode *Mode;
-    uint32_t PreviousSpeed = MotorTimerController::MIN_PWM_VALUE;
+    uint32_t PreviousSpeed;
     uint32_t GetSpeed();
-    long PreviousPrintTime = 0;
+    std::function<void(uint32_t)> SetChannelValue;
+    uint32_t MinSpeed;
+    uint32_t MaxSpeed;
 
     public:
     Motor(
-      MotorTimerChannel *timerChannel,
-      MotorMode *mode
+      MotorMode *mode,
+      std::function<void(uint32_t)> setChannelValue,
+      uint32_t minSpeed,
+      uint32_t maxSpeed
     );
     uint32_t GetPreviousSpeed();
     void Loop();

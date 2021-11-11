@@ -2,15 +2,19 @@
 
 MotorController::MotorController(
   MotorMode *motorMode,
-  const BoardTimer *motorBoardTimer
+  const BoardTimerSetup *motorBoardTimerSetup
 )
 {
-  TimerController = new MotorTimerController(motorBoardTimer);
+  TimerController = new MotorTimerController(motorBoardTimerSetup);
   for (int i = 0; i < MOTORS_COUNT; i++)
   {
     Motors[i] = new Motor(
-      new MotorTimerChannel(i + 1, TimerController),
-      motorMode
+      motorMode,
+      [=] (uint32_t value) {
+        TimerController->SetChannelValue(i + 1, value);
+      },
+      MotorTimerController::MIN_PWM_VALUE,
+      MotorTimerController::MAX_PWM_VALUE
     );
   }
 }
@@ -33,10 +37,6 @@ SerialEncoderInput *MotorController::GetSerialEncoderInput()
 void MotorController::Setup()
 {
   TimerController->Setup();
-  for (int i = 0; i < MOTORS_COUNT; i++)
-  {
-    TimerController->SetupChannel(i + 1);
-  }
 }
 
 void MotorController::Loop()

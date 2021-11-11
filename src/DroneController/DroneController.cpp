@@ -17,7 +17,7 @@ DroneController::DroneController(
         return MyFmController->GetFmChannelValue(2);
       }
     ),
-    boardSetup->MotorBoardTimer
+    boardSetup->MotorBoardTimerSetup
   );
 
   HardwareSerial* communicationSerial = new HardwareSerial(

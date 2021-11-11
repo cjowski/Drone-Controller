@@ -15,19 +15,32 @@
     {
       EspCommunicationSerial = new BlackPillSerial1();
 
+
+      // std::list<BoardTimerChannelSetup*> fmChannels;
+      // fmChannels.push_back(new BoardTimerChannelSetup(1, timer2));
+      // fmChannels.push_back(new BoardTimerChannelSetup(2, timer2));
+      // fmChannels.push_back(new BoardTimerChannelSetup(3, timer4));
+      // fmChannels.push_back(new BoardTimerChannelSetup(4, timer4));
+
+      // FmBoardTimerSetup = new BoardTimerSetup(
+      //   fmChannels
+      // );
+      FmBoardTimerSetup = new BoardTimerSetup(
+        new BlackPillTimer3()
+      );
+
       auto timer2 = new BlackPillTimer2();
       auto timer4 = new BlackPillTimer4();
 
-      std::list<BoardTimerChannelSetup*> fmChannels;
-      fmChannels.push_back(new BoardTimerChannelSetup(1, timer2));
-      fmChannels.push_back(new BoardTimerChannelSetup(2, timer2));
-      fmChannels.push_back(new BoardTimerChannelSetup(3, timer4));
-      fmChannels.push_back(new BoardTimerChannelSetup(4, timer4));
+      std::list<BoardTimerChannelSetup*> motorChannels;
+      motorChannels.push_back(new BoardTimerChannelSetup(1, timer2));
+      motorChannels.push_back(new BoardTimerChannelSetup(2, timer2));
+      motorChannels.push_back(new BoardTimerChannelSetup(3, timer2));
+      motorChannels.push_back(new BoardTimerChannelSetup(4, timer4));
 
-      FmBoardTimerSetup = new BoardTimerSetup(
-        fmChannels
+      MotorBoardTimerSetup = new BoardTimerSetup(
+        motorChannels
       );
-      MotorBoardTimer = new BlackPillTimer3();
       // MotorBoardTimerSetup = new BoardTimerSetup(
       //   new BlackPillTimer3()
       // );

@@ -15,6 +15,11 @@ Motor::Motor(
 
 uint32_t Motor::GetSpeed()
 {
+  if (!IsOn)
+  {
+    return MinSpeed;
+  }
+
   MotorSpeed speed = Mode->GetMotorSpeed();
 
   if (speed.Type == MotorSpeed::UsePrevious)
@@ -38,6 +43,16 @@ uint32_t Motor::GetSpeed()
 uint32_t Motor::GetPreviousSpeed()
 {
   return PreviousSpeed;
+}
+
+void Motor::TurnOn()
+{
+  IsOn = true;
+}
+
+void Motor::TurnOff()
+{
+  IsOn = false;
 }
 
 void Motor::Loop()

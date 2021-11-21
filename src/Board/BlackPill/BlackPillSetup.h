@@ -14,17 +14,6 @@
     BlackPillSetup()
     {
       EspCommunicationSerial = new BlackPillSerial1();
-
-
-      // std::list<BoardTimerChannelSetup*> fmChannels;
-      // fmChannels.push_back(new BoardTimerChannelSetup(1, timer2));
-      // fmChannels.push_back(new BoardTimerChannelSetup(2, timer2));
-      // fmChannels.push_back(new BoardTimerChannelSetup(3, timer4));
-      // fmChannels.push_back(new BoardTimerChannelSetup(4, timer4));
-
-      // FmBoardTimerSetup = new BoardTimerSetup(
-      //   fmChannels
-      // );
       FmBoardTimerSetup = new BoardTimerSetup(
         new BlackPillTimer3()
       );
@@ -41,9 +30,8 @@
       MotorBoardTimerSetup = new BoardTimerSetup(
         motorChannels
       );
-      // MotorBoardTimerSetup = new BoardTimerSetup(
-      //   new BlackPillTimer3()
-      // );
+
+      MotorOnOffButton = new Button(PA15);
     }
   };
 

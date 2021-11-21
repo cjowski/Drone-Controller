@@ -16,6 +16,7 @@
     SerialController *MySerialController;
     TaskController *MyTaskController;
     MotorController *MyMotorController;
+    Button *MotorOnOffButton;
 
     public:
     DroneController(BoardSetup *boardSetup);

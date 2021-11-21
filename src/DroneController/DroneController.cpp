@@ -17,7 +17,8 @@ DroneController::DroneController(
         return MyFmController->GetFmChannelValue(2);
       }
     ),
-    boardSetup->MotorBoardTimerSetup
+    boardSetup->MotorBoardTimerSetup,
+    boardSetup->MotorOnOffButton
   );
 
   HardwareSerial* communicationSerial = new HardwareSerial(
@@ -52,6 +53,8 @@ DroneController::DroneController(
     },
     MyTaskController
   );
+  MotorOnOffButton = boardSetup->MotorOnOffButton;
+  MotorOnOffButton->DebugMode = true;
 }
 
 void DroneController::Setup()
@@ -68,4 +71,5 @@ void DroneController::Loop()
   MyMotorController->Loop();
   MySerialController->Loop();
   MyTaskController->Loop();
+  MotorOnOffButton->Loop();
 }

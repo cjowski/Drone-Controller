@@ -3,6 +3,7 @@
 
   #include "Motor.h"
   #include "Timer/MotorTimerController.h"
+  #include "Board/Button/Button.h"
   #include <Serial/Type/StringList/Encoder/StringListEncoderInput.h>
 
   class MotorController
@@ -11,12 +12,14 @@
     static const int MOTORS_COUNT = 4;
     Motor *Motors[MOTORS_COUNT];
     MotorTimerController *TimerController;
+    Button *MotorOnOffButton;
     char SERIAL_KEY = 'M';
 
     public:
     MotorController(
       MotorMode *motorMode,
-      const BoardTimerSetup *motorBoardTimerSetup
+      const BoardTimerSetup *motorBoardTimerSetup,
+      Button *motorOnOffButton
     );
     SerialEncoderInput *GetSerialEncoderInput();
     void Setup();

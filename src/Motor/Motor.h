@@ -13,6 +13,7 @@
     std::function<void(uint32_t)> SetChannelValue;
     uint32_t MinSpeed;
     uint32_t MaxSpeed;
+    bool IsOn = false;
 
     public:
     Motor(
@@ -22,6 +23,8 @@
       uint32_t maxSpeed
     );
     uint32_t GetPreviousSpeed();
+    void TurnOn();
+    void TurnOff();
     void Loop();
   };
 

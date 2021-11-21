@@ -2,7 +2,8 @@
 
 MotorController::MotorController(
   MotorMode *motorMode,
-  const BoardTimerSetup *motorBoardTimerSetup
+  const BoardTimerSetup *motorBoardTimerSetup,
+  Button *motorOnOffButton
 )
 {
   TimerController = new MotorTimerController(motorBoardTimerSetup);
@@ -17,6 +18,7 @@ MotorController::MotorController(
       MotorTimerController::MAX_PWM_VALUE
     );
   }
+  MotorOnOffButton = motorOnOffButton;
 }
 
 SerialEncoderInput *MotorController::GetSerialEncoderInput()
@@ -37,6 +39,22 @@ SerialEncoderInput *MotorController::GetSerialEncoderInput()
 void MotorController::Setup()
 {
   TimerController->Setup();
+  MotorOnOffButton->RegisterButtonOnFunction(
+    [&] () {
+      for (int i = 0; i < MOTORS_COUNT; i++)
+      {
+        Motors[i]->TurnOn();
+      }
+    }
+  );
+  MotorOnOffButton->RegisterButtonOffFunction(
+    [&] () {
+      for (int i = 0; i < MOTORS_COUNT; i++)
+      {
+        Motors[i]->TurnOff();
+      }
+    }
+  );
 }
 
 void MotorController::Loop()
